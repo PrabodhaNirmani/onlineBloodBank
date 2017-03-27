@@ -1,0 +1,67 @@
+<div class="scrollable">
+	<div class="container col-sm-8">
+		<div class="page-header">
+			<h1>User Login</h1>
+		</div>
+		<form  name="regForm" ng-submit="main.doLogin(loginData,regForm.$valid);" novalidate >
+			
+			<!-- <div ng-class="{'has-success':(regForm.email.$valid && !regForm.email.$pristine),'has-error':(!regForm.email.$valid && !regForm.email.$pristine)||(regForm.$submitted && !regForm.email.$valid)}">
+				<label>Email: </label>
+				<input type="text" name="email" id="email" placeholder="Enter email address" class="form-control" ng-model="main.loginData.email" ng-pattern="/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/" required> 
+				<p class="help-block" ng-show="(!regForm.email.$pristine && regForm.email.$error.required)||(regForm.$submitted && regForm.email.$error.required)">*Required</p>
+				<ul class="help-block" ng-show="(!regForm.email.$pristine && regForm.email.$error.pattern)">
+					<li>Must contain @ sign</li>
+					<li>Must not contain any special charactors</li>
+					
+				</ul>
+				<br>
+				
+			</div>
+ -->
+			<div ng-class="{'has-success':(regForm.username.$valid && !regForm.username.$pristine),'has-error':(!regForm.username.$valid && !regForm.username.$pristine)||(regForm.$submitted && !regForm.username.$valid)}">
+				<label>Username: </label>
+				<input type="text" name="username" id="username" placeholder="Enter username" class="form-control" ng-model="main.loginData.username" required> 
+				<p class="help-block" ng-show="(!regForm.username.$pristine && regForm.username.$error.required)||(regForm.$submitted && regForm.username.$error.required)">*Required</p>
+				
+				<br>
+				
+			</div>
+
+			<div ng-class="{'has-success':(regForm.password.$valid && !regForm.password.$pristine),'has-error':(!regForm.password.$valid && !regForm.password.$pristine)||(regForm.$submitted && !regForm.password.$valid)}">
+				
+				<!-- password -->
+				<label>Password: </label>
+				<input type="password" name="password" id="password" placeholder="Enter password" class="form-control" ng-model="main.loginData.password" required>
+				<p class="help-block" ng-show="(!regForm.password.$pristine && regForm.password.$error.required)||(regForm.$submitted && regForm.password.$error.required)">*Required</p>
+				<br>
+			 
+			</div>
+			
+			
+			<button class="btn btn-inverse" type="submit">Submit</button>
+				
+
+
+		</form>
+		<div class="jumbotron text-center" ng-show="main.loading">
+			<span class="glyphicon glyphicon-repeat spinner"></span>
+			<p>Loading...</p>
+		</div>
+	<br><br>
+		<div class="row show-hide-message" ng-show="main.successMsg">
+			<div class="alert alert-success">{{main.successMsg}}</div>
+		</div>
+		<br>
+		<div class="row show-hide-message" ng-show="main.errorMsg">
+			<div class="alert alert-danger">{{main.errorMsg}}</div>
+		</div>
+		
+	</div>
+</div>
+
+<style type="text/css">
+	.scrollable {
+	    height: 600px; /* or any value */
+	    overflow-y: auto;
+	}
+</style>

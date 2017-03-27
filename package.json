@@ -1,0 +1,30 @@
+{
+  "name": "online_blood_bank",
+  "version": "1.0.0",
+  "description": "blood bank management system",
+  "main": "server.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "meank",
+    "stack"
+  ],
+  "author": "Prabodha Nirmani",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "email-existence": "^0.1.5",
+    "express": "^4.15.2",
+    "jsonwebtoken": "^7.3.0",
+    "mongoose-title-case": "0.0.4",
+    "mongoose-validator": "^1.2.5",
+    "morgan": "^1.8.1",
+    "nodemailer": "^3.1.8",
+    "nodemailer-sendgrid-transport": "^0.2.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0"
+  }
+}

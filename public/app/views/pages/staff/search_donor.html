@@ -1,0 +1,76 @@
+<div class="scollable">
+		
+	<div class="container col-sm-10">
+		<div class="page-header"><h1>Search Blood Donor</h1></div>
+		
+		<br><br>
+		<div class="row">
+			<div class="col-sm-8 col-sm-offset-2" ng-class="{'has-success':(searchForm.email.$valid && !searchForm.email.$pristine),'has-error':(!searchForm.email.$valid && !searchForm.email.$pristine)||(searchForm.$submitted && !searchForm.email.$valid)}">
+			<form name="searchForm" ng-submit="registerDonation.searchDonor(searchData,searchForm.$valid)" novalidate>
+				<label class="form">Email: </label>
+				<div class="input-group input-group-lg">
+					<!-- Email -->
+					
+					<input type="text" name="email" class="form-control" placeholder="Search for..." ng-model="registerDonation.searchData.email" ng-minlength="5" ng-maxlength="35" ng-pattern="/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/" required>
+					<span class="input-group-btn" >
+
+			        <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+			      	</span>
+			      	
+			    </div>
+			    <p class="help-block" ng-show="(!searchForm.email.$pristine && searchForm.email.$error.required)||(searchForm.$submitted && searchForm.email.$error.required)">*Required</p>
+					<ul class="help-block" ng-show="(!searchForm.email.$pristine && searchForm.email.$error.pattern) || (!searchForm.email.$pristine && searchForm.email.$error.minlength) || (!searchForm.email.$pristine && searchForm.email.$error.maxlength)">
+						<li>Must contain @ sign</li>
+						<li>Must not contain any special charactors</li>
+						<li>Must be at least 5 charactors but no more than 35</li>				
+					</ul>
+			</form>
+			</div>
+		</div>
+		<div class="col-sm-6 col-sm-offset-3">
+			<br>
+			<div class="jumbotron text-center" ng-show="registerDonation.loading">
+
+				<span class="glyphicon glyphicon-repeat spinner"></span>
+				<p>Loading...</p>
+			</div>
+			
+			<!-- success : search results -->
+			<div class="row show-hide-message text-center" ng-show="registerDonation.searched &&(registerDonation.donorData.email==searchForm.email.$viewValue)">
+				<br>
+				<div class="card col-sm-offset-1" style="width: 20rem;">
+					<a href="/donor-profile" class="card-link"><img class="card-img-top" src="../assets/img/person.png" alt="Card image cap"></a>
+
+					<div class="card-block">
+						<h4 class="card-title">{{registerDonation.donorData.name}}</h4>
+						
+					</div>
+					<ul class="list-group list-group-flush">
+						<li class="list-group-item">{{registerDonation.donorData.gender}}</li>
+						<li class="list-group-item">{{registerDonation.donorData.abo+" "+registerDonation.donorData.rh}}</li>
+				
+					</ul>
+					<div class="card-block">
+						<a href="/donor-profile" class="btn btn-default">View profile</a>
+				
+					</div>
+				</div>
+				
+			</div>
+			<br>
+			<!-- error -->
+			<div class="row show-hide-message text-center" ng-show="registerDonation.errorMsg">
+				<div class="alert alert-danger">{{registerDonation.errorMsg}}</div>
+			</div>
+		</div>
+	</div>
+
+
+</div>
+
+<style type="text/css">
+	.scrollable {
+	    height: 500px; /* or any value */
+	    overflow-y: auto;
+	}
+</style>

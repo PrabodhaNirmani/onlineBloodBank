@@ -1,0 +1,208 @@
+<div class="scrollable">
+	<div class="container  col-sm-10 ">
+		<div class="page-header">
+			<h1>Register Blood Donor</h1>
+		</div>
+
+		<br><br>
+		<div class="row">
+			
+			<div class="col-sm-8 col-sm-offset-2" ng-class="{'has-success':(searchForm.email.$valid && !searchForm.email.$pristine),'has-error':(!searchForm.email.$valid && !searchForm.email.$pristine)||(searchForm.$submitted && !searchForm.email.$valid)}">
+			<form name="searchForm" ng-submit="registerDonation.donationSearch(regData,searchForm.$valid)" novalidate>
+				<label class="form">Email: </label>
+				<div class="input-group input-group-lg">
+					<!-- Email -->
+					
+					<input type="text" name="email" class="form-control" placeholder="Search for..." ng-model="registerDonation.regData.email" ng-minlength="5" ng-maxlength="35" ng-pattern="/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/" required>
+					<span class="input-group-btn">
+
+			        <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+			      	</span>
+			      	
+			    </div>
+			    <p class="help-block" ng-show="(!searchForm.email.$pristine && searchForm.email.$error.required)||(searchForm.$submitted && searchForm.email.$error.required)">*Required</p>
+					<ul class="help-block" ng-show="(!searchForm.email.$pristine && searchForm.email.$error.pattern) || (!searchForm.email.$pristine && searchForm.email.$error.minlength) || (!searchForm.email.$pristine && searchForm.email.$error.maxlength)">
+						<li>Must contain @ sign</li>
+						<li>Must not contain any special charactors</li>
+						<li>Must be at least 5 charactors but no more than 35</li>				
+					</ul>
+			</form>
+			</div>
+			<div class="col-sm-6 col-sm-offset-3">
+			<br>
+				<div class="jumbotron text-center" ng-show="registerDonation.loading">
+					<span class="glyphicon glyphicon-repeat spinner"></span>
+					<p>Loading...</p>
+				</div>
+				
+				<!-- success : search results -->
+				<div class="row show-hide-message text-center" ng-show="registerDonation.successMsg">
+				
+					<div class="alert alert-success">{{registerDonation.successMsg}}</div>
+				</div>
+				
+				<!-- error -->
+				<div class="row show-hide-message text-center" ng-show="registerDonation.errorMsg">
+					<div class="alert alert-danger">{{registerDonation.errorMsg}}</div>
+				</div>
+			</div>
+			
+		</div>
+
+		<div class="row">
+			<div class="page-header"><h3>Registration Form</h3></div>
+			<div class="container  col-sm-8">
+				
+
+				<form name="regForm" ng-submit="registerDonation.registerDonor(regData,regForm.$valid);" novalidate>
+					<div class="row" ng-class="{'has-success':(regForm.name.$valid && !regForm.name.$pristine),'has-error':(!regForm.name.$valid && !regForm.name.$pristine)||(regForm.$submitted && !regForm.name.$valid)}">
+						<!-- Name -->
+						<label>Name in Full: </label>
+						<input type="text" name="name" id="name" placeholder="Enter name" class="form-control" ng-model="registerDonation.regData.name" ng-pattern="/^(([a-zA-Z]{3,20})+[ ]+([a-zA-Z]{3,20})+)+$/" ng-minlength="3" ng-maxlength="20" required>		
+						<p class="help-block" ng-show="(!regForm.name.$pristine && regForm.name.$error.required)||(regForm.$submitted && regForm.name.$error.required)">*Required</p>
+						<ul class="help-block" ng-show="(!regForm.name.$pristine && regForm.name.$error.pattern) || (!regForm.name.$pristine && regForm.name.$error.minlength) || (!regForm.name.$pristine && regForm.name.$error.maxlength)">
+							<li>Must have space between first name and last name</li>
+							<li>Must not contain any special charactors</li>
+							<li>Must not contain any number</li>
+							<li>Must be at least 3 charactors but no more than 20</li>				
+						</ul>
+						<br>
+
+					</div>
+
+					<div class="row" ng-class="{'has-success':(regForm.nic_no.$valid && !regForm.nic_no.$pristine),'has-error':(!regForm.nic_no.$valid && !regForm.nic_no.$pristine)||(regForm.$submitted && !regForm.nic_no.$valid)}">
+						<!-- NIC no -->
+						<label>National Identity Card Number: </label>
+						<input type="text" name="nic_no" id="nic_no" placeholder="Enter national Id number" class="form-control" ng-model="registerDonation.regData.nic_no" ng-minlength="10" ng-maxlength="10" ng-pattern="/^[0-9]{9}[a-zA-Z]{1}$/" required>
+						<p class="help-block" ng-show="(!regForm.nic_no.$pristine && regForm.nic_no.$error.required)||(regForm.$submitted && regForm.nic_no.$error.required)">*Required</p>
+						<ul class="help-block" ng-show="(!regForm.nic_no.$pristine && regForm.nic_no.$error.pattern) || (!regForm.nic_no.$pristine && regForm.nic_no.$error.minlength) || (!regForm.nic_no.$pristine && regForm.nic_no.$error.maxlength)">
+							<li>Must containg 9 digit number and one charater at end</li>
+							<li>Must not contain any special charactors</li>
+						
+						</ul>
+						<br>
+					</div>
+					<div class="row">
+						<div class="col-sm-4" ng-class="{'has-success':(regForm.birthday.$valid && !regForm.birthday.$pristine),'has-error':(!regForm.birthday.$valid && !regForm.birthday.$pristine)||(regForm.$submitted && !regForm.birthday.$valid)}">
+							<!-- Birthday -->
+							<label>Date of Birth: </label>
+							<input type="date" name="birthday" id="birthday" placeholder="Enter date of birth" class="form-control" ng-model="registerDonation.regData.birthday" required>
+							<p class="help-block" ng-show="(!regForm.birthday.$pristine && regForm.birthday.$error.required)||(regForm.$submitted && regForm.birthday.$error.required)">*Required</p>
+
+							
+						</div>
+						
+		
+						
+					</div>
+					<br>
+					<div class="row" ng-class="{'has-success':(regForm.$submitted && (registerDonation.regData.gender=='male'|| registerDonation.regData.gender=='female')),'has-error':(regForm.$submitted && !(registerDonation.regData.gender=='male'|| registerDonation.regData.gender=='female'))}">
+						<!-- gender -->
+						<div class="col-sm-2"> <label>Gender: </label></div>
+						<div class="col-sm-2">
+							<input type="radio" checked="checked" name="gender" value="male" ng-model="registerDonation.regData.gender"> Male
+						</div>
+						<div class="col-sm-3">
+							<input type="radio" name="gender" value="female" ng-model="registerDonation.regData.gender"> Female
+						</div>
+						
+						<p class="help-block" ng-show="(regForm.$submitted && !(registerDonation.regData.gender=='male'|| registerDonation.regData.gender=='female'))">*Required</p>
+					  		<br><br>
+					</div>
+					
+
+					<div class="row" ng-class="{'has-success':(regForm.address.$valid && !regForm.address.$pristine),'has-error':(!regForm.address.$valid && !regForm.address.$pristine)||(regForm.$submitted && !regForm.address.$valid)}">
+						<!-- Address -->
+							<label>Address: </label>
+							<input type="text" name="address" id="address" placeholder="Enter address" class="form-control" ng-model="registerDonation.regData.address" required>
+							<p class="help-block" ng-show="(!regForm.address.$pristine && regForm.address.$error.required)||(regForm.$submitted && regForm.address.$error.required)">*Required</p>
+				  		<br>
+					</div>
+
+					<div class="row" ng-class="{'has-success':(regForm.tele_no.$valid && !regForm.tele_no.$pristine),'has-error':(!regForm.tele_no.$valid && !regForm.tele_no.$pristine)||(regForm.$submitted && !regForm.tele_no.$valid)}">
+						<!-- Tel -->
+						<label>Telephone number: </label>
+						<input type="text" name="tele_no" id="tele_no" placeholder="Enter telephone number" class="form-control" ng-model="registerDonation.regData.tele_no" ng-minlength="10" ng-maxlength="10" ng-pattern="/^[0-9]{10}$/" ng-model="registerUser.regData.tele_no" required>
+						<p class="help-block" ng-show="(!regForm.tele_no.$pristine && regForm.tele_no.$error.required)||(regForm.$submitted && regForm.tele_no.$error.required)">*Required</p>
+						<ul class="help-block" ng-show="(!regForm.tele_no.$pristine && regForm.tele_no.$error.pattern) || (!regForm.tele_no.$pristine && regForm.tele_no.$error.minlength) || (!regForm.tele_no.$pristine && regForm.tele_no.$error.maxlength)">
+							<li>Must only contain 10 digit number</li>
+							
+						</ul>
+				  		<br>
+					</div>
+
+					<div class="row" ng-class="{'has-success':(!registerDonation.emailInvalid && regForm.email.$valid && !regForm.email.$pristine),'has-error':registerDonation.emailInvalid ||(!regForm.email.$valid && !regForm.email.$pristine)||(regForm.$submitted && !regForm.email.$valid)}">
+						<!-- Email -->
+						<label>Email: </label>
+						<input type="text" name="email" id="email" placeholder="Enter email" class="form-control" ng-model="registerDonation.regData.email" ng-minlength="5" ng-maxlength="35" ng-pattern="/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/" ng-blur="registerDonation.checkEmail(regData)" required>
+						<p class="help-block" ng-show="(!regForm.email.$pristine && regForm.email.$error.required)||(regForm.$submitted && regForm.email.$error.required)">*Required</p>
+						<p class="help-block" ng-show="regForm.email.$valid && registerDonation.emailMsg && !regForm.email.$error.required">{{registerDonation.emailMsg }}</p>
+						<ul class="help-block" ng-show="(!regForm.email.$pristine && regForm.email.$error.pattern) || (!regForm.email.$pristine && regForm.email.$error.minlength) || (!regForm.email.$pristine && regForm.email.$error.maxlength)">
+							<li>Must contain @ sign</li>
+							<li>Must not contain any special charactors</li>
+							<li>Must be at least 5 charactors but no more than 35</li>				
+						</ul>
+				  		<br>
+					</div>
+
+					<div class="row">
+						<!-- Blood group -->
+						<div class="col-sm-4">
+							<label>Blood group: </label>
+						</div>
+						
+						<div class="col-sm-2" ng-class="{'has-success':(regForm.$submitted && registerDonation.regData.abo!=undefined),'has-error':(regForm.$submitted && registerDonation.regData.abo==undefined)}">
+							<select name="abo" class="form-control" ng-model="registerDonation.regData.abo">
+								<option value="A">A</option>
+								<option value="B">B</option>
+								<option value="AB">AB</option>
+								<option value="O">O</option>
+
+
+							</select>
+							<p class="help-block" ng-show="(regForm.$submitted && registerDonation.regData.abo==undefined)">*Required</p>
+								
+						</div>
+						<div class="col-sm-2" ng-class="{'has-success':(regForm.$submitted && registerDonation.regData.rh!=undefined),'has-error':(regForm.$submitted && registerDonation.regData.rh==undefined)}">
+							<select name="rh" class="form-control" ng-model="registerDonation.regData.rh">
+								<option value="+">+</option>
+								<option value="-">-</option>
+
+							</select>
+							<p class="help-block" ng-show="(regForm.$submitted && registerDonation.regData.rh==undefined)">*Required</p>	
+						</div>
+							
+				  		<br>
+					</div>
+					<br><br>
+
+			  		<button class="btn btn-inverse" type="submit">Submit</button>
+				
+				</form>
+				<div class="col-sm-offset-1 col-sm-10">
+					<div class="jumbotron text-center col-sm-5" ng-show="registerDonation.loadingReg">
+						<span class="glyphicon glyphicon-repeat spinner"></span>
+						<p>Loading...</p>
+					</div>
+					<br><br>
+					<div class="row show-hide-message text-center" ng-show="registerDonation.successMsgReg">
+						<div class="alert alert-success">{{registerDonation.successMsgReg}}</div>
+					</div>
+					<br>
+					<div class="row show-hide-message text-center" ng-show="registerDonation.errorMsgReg">
+						<div class="alert alert-danger">{{registerDonation.errorMsgReg}}</div>
+					</div>
+				
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<style type="text/css">
+	.scrollable {
+	    height: 570px; /* or any value */
+	    overflow-y: auto;
+	}
+</style>
