@@ -23,8 +23,16 @@ var UserSchema=new Schema({
   role:{
     type:String,
     required:true
+  },
+	active:{
+    type:Boolean,
+    default:false,
+    required:true
+  },
+  temporyToken:{
+    type:String,
+    default:null
   }
-	
   
 });
 

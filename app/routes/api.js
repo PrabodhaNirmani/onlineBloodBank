@@ -49,7 +49,7 @@ module.exports=function(router){
 						res.json({success:false,message:"Counld not authenticate password"});
 
 					}else{
-						var token=jwt.sign({username:user.username,role:user.role,email:user.email},secret,{ expiresIn: '3h' });
+						var token=jwt.sign({username:user.username,role:user.role,email:user.email},secret,{ expiresIn: '1h' });
 						res.json({success:true,message:"User authenticated successfully",token:token});
 					}
 				}
@@ -153,7 +153,7 @@ module.exports=function(router){
 				res.json({success:false,message:"No user was found"});
 			}
 			else{
-				var newToken=jwt.sign({username:user.username},secret,{ expiresIn: '5h' });
+				var newToken=jwt.sign({username:user.username},secret,{ expiresIn: '1h' });
 				res.json({success:true,token:newToken});
 			}
 		});
@@ -166,6 +166,8 @@ module.exports=function(router){
 		user.username=req.body.username;
 		user.password=req.body.password;
 		user.role="admin";
+		//user.temporyToken=null;
+		user.active=true;
 		
 		if(req.body.username==null||req.body.username==''|| req.body.password==null||req.body.password==''||req.body.email==null||req.body.email==''||req.body.passwordC==null||req.body.passwordC==''){
 			
@@ -232,8 +234,9 @@ module.exports=function(router){
 			var user=new User();
 			user.email=staff.email;
 			user.password=password;
-			user.username=user.email.split('@')[0];
+			user.username=user.email;
 			user.role="staff";
+			//user.temporyToken=var token=jwt.sign({username:user.username,role:user.role,email:user.email},secret,{ expiresIn: '2d' });
 			//cheking the existance of the email given
 			emailExistence.check(user.email, function(err,response){
 				if(response){
@@ -257,8 +260,8 @@ module.exports=function(router){
 									  from: 'Localhost staff,bloodbank@localhost.com',
 									  to: user.email,
 									  subject: 'Loging details to the ONLINE BLOOD BANK',
-									  text: 'Hello '+staff.name+'. Your account of ONLINE BLOOD BANK for staff member access was created. This e-mail contains login details to the system. Username :'+user.username+'Password : '+password+'',
-									  html: 'Hello '+staff.name+'. Your account of ONLINE BLOOD BANK for staff member access was created. This e-mail contains login details to the system.<br><br><b>Username : </b>'+user.username+'<br><b>Password : </b>'+password+''
+									  text: 'Hello '+staff.name+'. Your account of ONLINE BLOOD BANK for staff member access was created. This e-mail contains login details to the system. Username :'+user.username+'Password : '+password+'You can activate your account using this link : http://localhost:8080/login. Thank You!!!',
+									  html: 'Hello '+staff.name+'. Your account of ONLINE BLOOD BANK for staff member access was created. This e-mail contains login details to the system.<br><br><b>Username : </b>'+user.username+'<br><b>Password : </b>'+password+'<br><br><br>You can activate your account using this link : <a href="http://localhost:8080/login">http://localhost:8080/login.</a><br><br><br>Thank You!!!'
 									};
 
 									client.sendMail(email, function(err, info){
