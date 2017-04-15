@@ -1,4 +1,4 @@
-var express=require(  'express');
+var express=require('express');
 var app=express();
 var port=process.env.PORT||8080
 var morgan=require('morgan');
@@ -17,8 +17,10 @@ app.use('/api',appRoutes);
 
 // 'mongodb://127.0.0.1:27017/online_blood_bank',
 //connect to the database
-// 'mongodb://prabodha:prabodha@1994@ds137360.mlab.com:37360/online_blood_bank'
-mongoose.connect('mongodb://127.0.0.1:27017/online_blood_bank', function(err){
+
+// mongodb://user:user@ds147480.mlab.com:47480/testblood
+//mongodb://prabodha:prabodha@ds147080.mlab.com:47080/blood-bank
+mongoose.connect('mongodb://prabodha:prabodha@ds147080.mlab.com:47080/blood-bank', function(err){
 	if(err){
 		console.log('Not connected to db');
 		console.log(err);

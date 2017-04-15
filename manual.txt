@@ -1,0 +1,8 @@
+download and install mongo
+download and install node
+
+//commands
+npm install nodemon
+npm install morgan --save
+npm install mongoose --save
+npm install body-parser

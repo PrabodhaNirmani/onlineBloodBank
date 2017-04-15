@@ -134,9 +134,9 @@ angular.module('mainController',['authServices','userServies'])
 		else{
 			app.isLoggedIn=false;
 			app.loadMe=false;
-			app.email="";
-			app.role="";
-			app.username="";
+			app.email=null;
+			app.role=null;
+			app.username=null;
 		}
 	});
 
@@ -157,7 +157,7 @@ angular.module('mainController',['authServices','userServies'])
 						app.successMsg=msg.data.message+'.... Redirecting...';
 						$timeout(function(){
 							$location.path('/about');	
-							app.loginData="";
+							app.loginData=null;
 							app.successMsg=false;
 							app.checkSession();
 						},1000);

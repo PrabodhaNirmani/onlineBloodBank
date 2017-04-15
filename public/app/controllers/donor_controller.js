@@ -24,7 +24,7 @@ angular.module('donorCtrl',['donorServices'])
 						app.successMsgReg=msg.data.message+'.... Loading...';
 						$timeout(function(){
 							app.regData="";
-							$location.path('/update-donor');
+							$location.path('/new-donation');
 							
 							Donor.setDonor(msg.data.BloodDonor);	
 							app.donorData=Donor.getDonor();
@@ -102,7 +102,7 @@ angular.module('donorCtrl',['donorServices'])
 							
 							Donor.setDonor(msg.data.BloodDonor);
 							app.donorData=Donor.getDonor();
-							$location.path('/update-donor');	
+							$location.path('/new-donation');	
 							// app.searching=true;
 							Donor.setFlag(true);
 							app.searching=Donor.getFlag();

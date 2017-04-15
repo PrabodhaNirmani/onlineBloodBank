@@ -1,0 +1,92 @@
+<!-- <div class="scrollable"> -->
+	<div class="container col-sm-10">
+		<div class="page-header"><h1>New Donation details</h1></div>
+		
+		<div class="row">
+			
+			<div class="container col-sm-8">
+			<!-- <div class="page-header">
+				<h3>New donation</h3>
+			</div> -->
+
+				<form name="regForm" ng-submit="registerDonation.donate(donorData,regForm.$valid);" novalidate>
+					<div class="row">
+						<!-- Name -->
+						<label>Name in Full: </label>
+						<input type="text" name="name" id="name" placeholder="Enter name" class="form-control" ng-model="registerDonation.donorData.name" readonly>		
+						
+						<br>
+
+					</div>
+					<div class="row">
+						<!-- Email -->
+						<label>Email: </label>
+						<input type="text" name="email" id="email" placeholder="Enter email" class="form-control" ng-model="registerDonation.donorData.email" readonly>		
+						
+						<br>
+
+					</div>
+					<div class="row">
+						<div class="col-sm-2">
+						<!-- ABO -->
+							<label>ABO: </label>
+							<input type="text" name="abo" id="abo" placeholder="Enter abo" class="form-control" ng-model="registerDonation.donorData.abo" readonly>		
+							
+						</div>
+						<div class="col-sm-2">
+							<!-- RH -->
+							<label>RH: </label>
+							<input type="text" name="rh" id="rh" placeholder="Enter rh" class="form-control" ng-model="registerDonation.donorData.rh" readonly>		
+							
+						<br>
+
+						</div>
+				
+					</div>
+					<div class="row" ng-class="{'has-success':(regForm.date.$valid && !regForm.date.$pristine),'has-error':(!regForm.date.$valid && !regForm.date.$pristine)||(regForm.$submitted && !regForm.date.$valid)}">
+						<div class="col-sm-8">
+							<!-- Donation date -->
+							<label>Date of the donation: </label>
+							<input type="date" name="date" id="date" placeholder="Enter date of the donation" class="form-control" ng-model="registerDonation.donorData.last_donated_date" ng-max="registerDonation.today" required>		
+							<p class="help-block" ng-show="(!regForm.date.$pristine && regForm.date.$error.required)||(regForm.$submitted && regForm.date.$error.required)">*Required</p>
+							<ul class="help-block" ng-show="(!regForm.date.$pristine && regForm.date.$error.max)|| (!regForm.date.$valid && !regForm.date.$pristine)">
+								<li>Date must not be a future date</li>
+							</ul>
+						</div>
+					</div>
+					<br>
+			  		<button class="btn btn-inverse" type="submit">Submit</button>
+			  		<br>
+
+				</form>
+			</div>
+			
+
+		</div>
+
+
+		<div class="col-sm-6 col-sm-offset-3">
+		<br>
+			<div class="jumbotron text-center" ng-show="registerDonation.loading">
+				<span class="glyphicon glyphicon-repeat spinner"></span>
+				<p>Loading...</p>
+			</div>
+			<!-- success : search results -->
+			<div class="row show-hide-message text-center" ng-show="registerDonation.successMsg">
+				<div class="alert alert-success">{{registerDonation.successMsg}}</div>
+			</div>
+			
+			<!-- error -->
+			<div class="row show-hide-message text-center" ng-show="registerDonation.errorMsg">
+				<div class="alert alert-danger">{{registerDonation.errorMsg}}</div>
+			</div>
+		</div>
+	</div>
+<!-- </div> -->
+
+<style type="text/css">
+	.scrollable {
+	    height: 600px; /* or any value */
+	    overflow-y: auto;
+	}
+</style>

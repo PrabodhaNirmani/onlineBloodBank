@@ -26,6 +26,7 @@ angular.module('bloodCtrl',['bloodServices'])
 							//$location.path('/update-donor');
 							app.bloodList=msg.data.BloodPacket;
 							console.log(app.bloodList)
+							console.log(app.bloodList.length);
 							// Donor.setDonor(msg.data.BloodDonor);	
 							// app.donorData=Donor.getDonor();
 							app.successMsgReg=false;

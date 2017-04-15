@@ -1,0 +1,10 @@
+{
+  "name": "Online Blood Bank: Node.js",
+  "description": "A barebones Node.js app using Express",
+  "repository": "https://github.com/PrabodhaNirmani/onlineBloodBank.git",
+  "logo": "http://node-js-sample.herokuapp.com/node.svg",
+  "keywords": ["node", "express", "static"],
+  "image": "heroku/nodejs"
+}
+
+

@@ -95,6 +95,14 @@ var app=angular.module('appRoutes',['ngRoute'])
 		permission:['staff']
 	})
 
+	.when('/new-donation',{
+		templateUrl:'app/views/pages/staff/new_donation.html',
+		controller:'regDonation',
+		controllerAs:'registerDonation',
+		authenticate:true,
+		permission:['staff']
+	})
+
 	.when('/donor-profile',{
 		templateUrl:'app/views/pages/staff/blood_donor_profile.html',
 		authenticate:true,

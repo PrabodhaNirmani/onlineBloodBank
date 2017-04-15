@@ -17,6 +17,7 @@
     "email-existence": "^0.1.5",
     "express": "^4.15.2",
     "jsonwebtoken": "^7.3.0",
+    "mongoose": "^4.9.4",
     "mongoose-title-case": "0.0.4",
     "mongoose-validator": "^1.2.5",
     "morgan": "^1.8.1",
