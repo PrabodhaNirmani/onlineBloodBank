@@ -1,76 +1,106 @@
-<!-- <div class="scollable"> -->
-		
-	<div class="container col-sm-10">
-		<div class="page-header"><h1>Search Blood</h1></div>
-		
-		<br><br>
-		<div class="row">
-			<div class="col-sm-6 col-sm-offset-2" ng-class="{'has-success':(searchForm.group.$valid && !searchForm.group.$pristine),'has-error':(!searchForm.group.$valid && !searchForm.group.$pristine)||(searchForm.$submitted && !searchForm.group.$valid)}">
-			<form name="searchForm" ng-submit="bloodController.searchBlood(searchData,searchForm.$valid)" novalidate>
-				<label class="form">Blood Group: </label>
-				<div class="input-group input-group-lg">
-					<!-- Blood Group -->
+<div class="container col-sm-10">
+	<div class="page-header"><h1>Search Blood</h1></div>
+	
+	<br><br>
+	<div class="row">
+		<div class="col-sm-6 col-sm-offset-2" ng-class="{'has-success':(searchForm.group.$valid && !searchForm.group.$pristine),'has-error':(!searchForm.group.$valid && !searchForm.group.$pristine)||(searchForm.$submitted && !searchForm.group.$valid)}">
+		<form name="searchForm" ng-submit="search.searchBlood(searchData,searchForm.$valid)" novalidate>
+			<label class="form">Blood Group: </label>
+			<div class="input-group input-group-lg">
+				<!-- Blood Group -->
 
+				
+				<input type="text" name="group" class="form-control" placeholder="Search for..." ng-model="search.searchData.group" ng-minlength="2" ng-maxlength="3" ng-pattern="/^(A|B|AB|O)[+-]$/" required>
+				<span class="input-group-btn" >
+
+		        <button class="btn btn-danger" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+		      	</span>
+		      	
+		    </div>
+		    <p class="help-block" ng-show="(!searchForm.group.$pristine && searchForm.group.$error.required)||(searchForm.$submitted && searchForm.group.$error.required)">*Required</p>
+				<ul class="help-block" ng-show="(!searchForm.group.$pristine && searchForm.group.$error.pattern) || (!searchForm.group.$pristine && searchForm.group.$error.minlength) || (!searchForm.group.$pristine && searchForm.group.$error.maxlength)">
+					<!-- <li>Letters must be capitalized</li> -->
+					<li>Must be in the format eg : "A+"</li>
 					
-					<input type="text" name="group" class="form-control" placeholder="Search for..." ng-model="bloodController.searchData.group" ng-minlength="2" ng-maxlength="3" ng-pattern="/^(A|B|AB|O)[+-]$/" required>
-					<span class="input-group-btn" >
-
-			        <button class="btn btn-danger" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
-			      	</span>
-			      	
-			    </div>
-			    <p class="help-block" ng-show="(!searchForm.group.$pristine && searchForm.group.$error.required)||(searchForm.$submitted && searchForm.group.$error.required)">*Required</p>
-					<ul class="help-block" ng-show="(!searchForm.group.$pristine && searchForm.group.$error.pattern) || (!searchForm.group.$pristine && searchForm.group.$error.minlength) || (!searchForm.group.$pristine && searchForm.group.$error.maxlength)">
-						<li>Letters must be capitalized</li>
-						<li>Must be in the format eg : "A+"</li>
-						
-					</ul>
-			</form>
-			</div>
+				</ul>
+		</form>
 		</div>
-		<div class="col-sm-6 col-sm-offset-2">
-			<br>
-			<div class="jumbotron text-center" ng-show="bloodController.loadingReg">
+	</div>
+	<div class="col-sm-6 col-sm-offset-2">
+		<br>
+		<div class="jumbotron text-center" ng-show="search.loadingReg">
 
-				<span class="glyphicon glyphicon-repeat spinner"></span>
-				<p>Loading...</p>
+			<span class="glyphicon glyphicon-repeat spinner"></span>
+			<p>Loading...</p>
+		</div>
+		
+		<!-- success : search results -->
+		
+		
+		<br>
+		<!-- error -->
+		<div class="row show-hide-message text-center" ng-show="search.errorMsgReg">
+			<div class="alert alert-danger">{{search.errorMsgReg}}</div>
+		</div>
+	</div>
+	<br><br>
+	<div ng-show="search.bloodList.length>0">
+		
+		<div class="showmore">
+			<div class="col-lg-6">
+				<div class="input-group">
+					<span class="input-group-addon">Results to display</span>
+					<input type="number" min="1" class="form-control" ng-model="number">
+				</div>
+			</div>
+			<div class="row">
+				<button type="button" class="btn btn-primary" ng-click="search.showMore(number)">Apply Filter</button>	
+
+				<button type="button" class="btn btn-primary" ng-click="search.showAll()">Show All</button>	
 			</div>
 			
-			<!-- success : search results -->
-			<!-- <div class="row show-hide-message text-center" ng-show="registerDonation.searched &&(registerDonation.donorData.email==searchForm.email.$viewValue)">
-				<br>
-				<div class="card col-sm-offset-1" style="width: 20rem;">
-					<a href="/donor-profile" class="card-link"><img class="card-img-top" src="../assets/img/person.png" alt="Card image cap"></a>
-
-					<div class="card-block">
-						<h4 class="card-title">{{registerDonation.donorData.name}}</h4>
-						
-					</div>
-					<ul class="list-group list-group-flush">
-						<li class="list-group-item">{{registerDonation.donorData.gender}}</li>
-						<li class="list-group-item">{{registerDonation.donorData.abo+" "+registerDonation.donorData.rh}}</li>
-				
-					</ul>
-					<div class="card-block">
-						<a href="/donor-profile" class="btn btn-default">View profile</a>
-				
-					</div>
-				</div>
-				
-			</div> -->
-			<br>
-			<!-- error -->
-			<div class="row show-hide-message text-center" ng-show="bloodController.errorMsgReg">
-				<div class="alert alert-danger">{{bloodController.errorMsgReg}}</div>
-			</div>
 		</div>
+	</div>
+	<br><br>
+	<div class="panel panel-red" ng-show="search.bloodList.length>0">
+		<div class="panel-heading">
+			<strong>Blood Packets</strong>
+		</div>
+
+
+		<table class="table table-bordered table-hover table-striped">
+                       
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>ABO</th>
+					<th>Rh</th>
+					<th>Date of donation</th>
+					<th>Date of expiration</th>
+				</tr>
+
+			</thead>
+			<tbody>
+				<tr ng-repeat="blood in search.bloodList | limitTo:search.limit">
+					<th>{{blood.blood_packet_id}}</th>
+					<th>{{blood.abo}}</th>
+					<th>{{blood.rh}}</th>
+					<th>{{blood.donated_date}}</th>
+					<th>{{blood.expiration_date}}</th>
+
+				</tr>
+			</tbody>					
+		</table>
 		
 	</div>
-<!-- </div> -->
+	<div class="col-sm-6 col-sm-offset-2">
+		<div class="row show-hide-message text-center" ng-show="search.showMoreError">
+			<div class="alert alert-danger">{{search.showMoreError}}</div>
+		<br><br>
+	
+		</div>
 
-<style type="text/css">
-	.scrollable {
-	    height: 500px; /* or any value */
-	    overflow-y: auto;
-	}
-</style>
+	</div>
+
+</div>
+		

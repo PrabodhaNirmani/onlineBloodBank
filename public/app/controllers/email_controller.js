@@ -207,7 +207,6 @@ angular.module('emailCtrl',['userServies','authServices'])
 	
 })
 
-
 .controller('passwordCtrl',function(User){
 
 	var app=this;

@@ -99,11 +99,27 @@
 						<div class="col-sm-4" ng-class="{'has-success':(regForm.birthday.$valid && !regForm.birthday.$pristine),'has-error':(!regForm.birthday.$valid && !regForm.birthday.$pristine)||(regForm.$submitted && !regForm.birthday.$valid)}">
 							<!-- Birthday -->
 							<label>Date of Birth: </label>
+							
 							<input type="date" name="birthday" id="birthday" placeholder="Enter date of birth" class="form-control" ng-model="registerDonation.regData.birthday" required>
 							<p class="help-block" ng-show="(!regForm.birthday.$pristine && regForm.birthday.$error.required)||(regForm.$submitted && regForm.birthday.$error.required)">*Required</p>
 
 							
 						</div>
+						<div class="col-sm-4 col-sm-offset-1">
+							<label>District: </label>
+						</div>
+						
+						<div class="col-sm-4" ng-class="{'has-success':(regForm.$submitted && registerDonation.regData.district!=undefined),'has-error':(regForm.$submitted && registerDonation.regData.district==undefined)}">
+							<select name="district" class="form-control" ng-model="registerDonation.regData.district">
+								
+								<option ng-repeat="district in registerDonation.districts" value="{{district}}">{{district}}</option>
+								
+
+							</select>
+							<p class="help-block" ng-show="(regForm.$submitted && registerDonation.regData.district==undefined)">*Required</p>
+								
+						</div>
+
 						
 		
 						
@@ -180,12 +196,13 @@
 			  		<button class="btn btn-danger" type="submit">Submit</button>
 				
 				</form>
-				<div class="col-sm-offset-1 col-sm-10">
-					<div class="jumbotron text-center col-sm-5" ng-show="registerDonation.loadingReg">
+				<!-- <div class="col-sm-offset-1 col-sm-10"> -->
+					<br>
+					<div class="jumbotron text-center" ng-show="registerDonation.loadingReg">
 						<span class="glyphicon glyphicon-repeat spinner"></span>
 						<p>Loading...</p>
 					</div>
-					<br><br>
+					
 					<div class="row show-hide-message text-center" ng-show="registerDonation.successMsgReg">
 						<div class="alert alert-success">{{registerDonation.successMsgReg}}</div>
 					</div>
@@ -194,7 +211,7 @@
 						<div class="alert alert-danger">{{registerDonation.errorMsgReg}}</div>
 					</div>
 				
-				</div>
+				<!-- </div> -->
 			</div>
 		</div>
 	</div>

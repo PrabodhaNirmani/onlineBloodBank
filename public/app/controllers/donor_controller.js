@@ -2,12 +2,26 @@ angular.module('donorCtrl',['donorServices'])
 
 .controller('regDonation',function($location,$timeout,Donor){
 
+
+
 	var app=this;
 	// Donor.setFlag(false);
 	app.searching=Donor.getFlag();
 	app.today=new Date;
 	app.donorData=Donor.getDonor();
+	app.districts=[];
 	
+
+	Donor.getDistricts().then(function(msg){
+		for(var i=0;i<25;i=i+1){
+			app.districts.push(msg.data.districts[i].district)
+		}
+		
+	});
+
+
+
+
 	this.registerDonor=function(regData,valid){
 		app.errorMsgReg=false;
 		app.loadingReg=true;

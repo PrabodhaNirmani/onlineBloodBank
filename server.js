@@ -15,6 +15,8 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 app.use(express.static(__dirname + '/public'));
 app.use('/api',appRoutes);
 
+var District=require('./app/models/district');
+var districtList=['Matara','Galle','Hambantota','Colombo','Gampaha','Kaluthara','Monaragala','Badulla','Kandy','Matale','Nuwara Eliya','Ampara','Anuradhapura','Batticaloa','Jaffna','Kegalle','Kilinochchi','Kurunegala','Mannar','Mullaitivu','Polonnaruwa','Puttalam','Rathnapura','Trincomalee','Vavniya'];
 // 'mongodb://127.0.0.1:27017/online_blood_bank',
 //connect to the database
 
@@ -28,6 +30,22 @@ mongoose.connect('mongodb://prabodha:prabodha@ds147080.mlab.com:47080/blood-bank
 	}
 	else{
 		console.log('connected');
+		
+		// for(var i=0;i<districtList.length;i=i+1){
+		// 	var district=new District();
+		// 	district.district=districtList[i];
+		// 	district.save(function(err){
+		// 		if(err){
+		// 			console.log(i);
+		// 		}
+		// 		else{
+		// 			console.log("suc"+i);
+		// 		}
+		// 	});
+			
+		// }
+		
+
 	}
 });
 

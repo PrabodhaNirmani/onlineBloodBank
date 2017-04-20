@@ -41,5 +41,9 @@ angular.module('donorServices',[])
 	}
 	
 
+	donorFactory.getDistricts=function(){
+		return $http.get('/api/get-districts');
+	}
+
 	return donorFactory;
 });

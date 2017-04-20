@@ -20,6 +20,7 @@ $(document).ready(function(){
   if(autoswitch==true){
       setInterval(nextSlide,autoswitch_speed)
   }
+ 
 
   //Switch to the next slide
 

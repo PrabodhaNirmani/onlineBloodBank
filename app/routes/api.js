@@ -2,6 +2,7 @@ var User=require('../models/user');
 var Donation=require('../models/donation');
 var BloodDonor=require('../models/blood_donor');
 var BloodPacket=require('../models/blood_packet');
+var District=require('../models/district');
 var jwt = require('jsonwebtoken');
 var secret='redjohn';
 
@@ -759,6 +760,7 @@ module.exports=function(router){
 			donor.gender=req.body.gender;
 			donor.address=req.body.address;
 			donor.tele_no=req.body.tele_no;
+			donor.district=req.body.district;
 			donor.email=req.body.email;
 			donor.abo=req.body.abo;
 			donor.rh=req.body.rh;
@@ -971,7 +973,8 @@ module.exports=function(router){
 
 		var bloodGroup=req.body.group;
 		if(bloodGroup.length==3){
-			var abo=bloodGroup.subString(0,2);	//spliting abo value
+			
+			var abo=bloodGroup[0]+bloodGroup[1];	//spliting abo value
 			var rh=bloodGroup[2];		//spliting rh factor
 		}
 		else if(bloodGroup.length==2){
@@ -982,20 +985,33 @@ module.exports=function(router){
 		BloodPacket.find({abo:abo,rh:rh,release_status:false,expire_status:false}).select('blood_packet_id abo rh donated_date expiration_date').exec(function(err,bloodList){ 
 			
 			if(err) {
+				console.log("err")
 			}
 			else{
-				if(!bloodList){
-				
+				if(bloodList.length==0){
+			
 					res.json({success:false, message:"No blood packets found"});
 				} 
-				else if(bloodList){
+				else if(bloodList.length>0){
+					
 					res.json({success:true,message:"Donor found",BloodPacket:bloodList});
 				}
 			}
 		});
 	});
 
-	
+	router.get('/get-districts',function(req,res){
+		District.find({valid:true}).select('district').exec(function(err,list){
+			if(err){
+				console.log("err");
+
+			}
+			else{
+				res.json({districts:list});
+			}
+		})
+
+	});	
 
 
 	//route to root

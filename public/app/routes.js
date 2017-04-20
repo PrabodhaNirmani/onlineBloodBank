@@ -119,16 +119,16 @@ var app=angular.module('appRoutes',['ngRoute'])
 
 	.when('/search-blood',{
 		templateUrl:'app/views/pages/staff/search_blood.html',
-		controller:'bloodCtrl',
-		controllerAs:'bloodController',
+		controller:'searchCtrl',
+		controllerAs:'search',
 		authenticate:true,
 		permission:['admin','staff']
 
 	})
 	.when('/release-blood',{
 		templateUrl:'app/views/pages/staff/release_blood.html',
-		controller:'bloodCtrl',
-		controllerAs:'bloodController',
+		controller:'releaseCtrl',
+		controllerAs:'release',
 		authenticate:true,
 		permission:['staff']
 
