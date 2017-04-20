@@ -50,7 +50,7 @@
 			<div class="col-lg-6">
 				<div class="input-group">
 					<span class="input-group-addon">Results to display</span>
-					<input type="number" min="1" class="form-control" ng-model="number">
+					<input type="text" min="1" class="form-control" ng-model="search.number">
 				</div>
 			</div>
 			<div class="row">
@@ -93,13 +93,35 @@
 		</table>
 		
 	</div>
-	<div class="col-sm-6 col-sm-offset-2">
-		<div class="row show-hide-message text-center" ng-show="search.showMoreError">
-			<div class="alert alert-danger">{{search.showMoreError}}</div>
-		<br><br>
-	
-		</div>
+	<div class="row">
+		<div class="col-sm-6 col-sm-offset-2">
+			<div class="row show-hide-message text-center" ng-show="search.showMoreError">
+				<div class="alert alert-danger">{{search.showMoreError}}</div>
+			
+		
+			</div>
 
+		</div>	
+	</div>
+	
+	<br>
+	<div ng-show="search.bloodList.length>0">
+		
+		<div class="showmore">
+			<div class="col-lg-6">
+				<div class="input-group">
+					<span class="input-group-addon">Results to display</span>
+					<input type="text" min="1" class="form-control" ng-model="search.number">
+				</div>
+			</div>
+			<div class="row">
+				<button type="button" class="btn btn-primary" ng-click="search.showMore(number)">Apply Filter</button>	
+
+				<button type="button" class="btn btn-primary" ng-click="search.showAll()">Show All</button>	
+			</div>
+			
+		</div>
+		<br><br>
 	</div>
 
 </div>

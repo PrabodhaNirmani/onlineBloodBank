@@ -4,12 +4,14 @@ angular.module('bloodCtrl',['bloodServices'])
 
 	var app=this;
 	app.limit=1;
-	app.bloodList={};
+	app.number=null;
+
 	app.searchBlood=function(searchData,valid){
 		app.errorMsgReg=false;
 		app.loadingReg=true;
 		app.searching=false;
 		app.showMoreError=false;
+		app.bloodList={};
 		
 		if(valid){
 
@@ -43,8 +45,8 @@ angular.module('bloodCtrl',['bloodServices'])
 
 	app.showMore=function(number){
 		app.showMoreError=false;
-		if(number>0){
-			app.limit=number;
+		if(app.number>0){
+			app.limit=app.number;
 
 		}
 		else{
@@ -56,8 +58,9 @@ angular.module('bloodCtrl',['bloodServices'])
 
 
 	app.showAll=function(){
+		app.number=null
 		app.showMoreError=false;
-		app.limit=app.bloodList.length;
+		app.limit=undefined;
 
 	}
 });
