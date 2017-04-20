@@ -1,0 +1,46 @@
+<div class="container col-sm-8">
+
+	<div class="page-header">
+		<h1>Resend Activation</h1>
+	</div>
+	<br>
+	<form  name="regForm" ng-submit="resend.checkStaffUser(regForm.data,regForm.$valid)" novalidate >
+		<div ng-class="{'has-success':(regForm.email.$valid && !regForm.email.$pristine && !resend.emailInvalid),'has-error':(!regForm.email.$valid && !regForm.email.$pristine)||(regForm.$submitted && !regForm.email.$valid)||(resend.emailInvalid)}">
+			<!-- Email -->
+			<label>Email: </label>
+			<input type="text" name="email" id="email" placeholder="Enter your email address" class="form-control" ng-model="resend.data.email" ng-minlength="5" ng-maxlength="35" ng-pattern="/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/" required>
+
+			<p class="help-block" ng-show="(!regForm.email.$pristine && regForm.email.$error.required)||(regForm.$submitted && regForm.email.$error.required)">*Required</p>
+		
+			<ul class="help-block" ng-show="(!regForm.email.$pristine && regForm.email.$error.pattern) || (!regForm.email.$pristine && regForm.email.$error.minlength) || (!regForm.email.$pristine && regForm.email.$error.maxlength)">
+				<li>Must contain @ sign</li>
+				<li>Must not contain any special charactors</li>
+				<li>Must be at least 5 charactors but no more than 35</li>				
+			</ul>
+			<br>
+		</div>
+
+		<button class="btn btn-danger" type="submit">Submit</button>
+			
+
+
+	</form>
+	<div class="row show-hide-message" ng-show="resend.successMsg">
+	<br>
+		<div class="alert alert-success">{{resend.successMsg}}</div>
+	</div>
+	
+	<div class="row show-hide-message" ng-show="resend.errorMsg">
+	<br>
+		<div class="alert alert-danger">{{resend.errorMsg}}</div>
+	</div>
+	<br><br>
+</div>
+
+
+<style type="text/css">
+	.scrollable {
+	    height: 600px; /* or any value */
+	    overflow-y: auto;
+	}
+</style>

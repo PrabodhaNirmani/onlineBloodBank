@@ -32,11 +32,58 @@ var app=angular.module('appRoutes',['ngRoute'])
 
 	})
 
+	.when('/activate/:token',{
+		templateUrl:'app/views/pages/activate/activate.html',
+		controller:'emailCtrl',
+		controllerAs:'emailCtrl',
+		authenticate:false
+	})
+
 	.when('/login',{
 		templateUrl:'app/views/pages/user/login.html',
+		
 		authenticate:false
 		
 
+	})
+	.when('/resend',{
+		templateUrl:'app/views/pages/activate/resend.html',
+		controller:'resendCtrl',
+		controllerAs:'resend',
+		authenticate:false
+	})
+
+	.when('/forgot-password',{
+		templateUrl:'app/views/pages/activate/forgot_password.html',
+		controller:'passwordCtrl',
+		controllerAs:'password',
+		authenticate:false
+		
+
+	})
+	.when('/forgot-username',{
+		templateUrl:'app/views/pages/activate/forgot_username.html',
+		controller:'usernameCtrl',
+		controllerAs:'username',
+		authenticate:false
+		
+
+	})
+
+	.when('/reset-password/:token',{
+		templateUrl:'app/views/pages/activate/reset_password.html',
+		controller:'resetCtrl',
+		controllerAs:'reset',
+		authenticate:false
+
+	})
+
+	.when('/change-password',{
+		templateUrl:'app/views/pages/activate/change_password.html',
+		controller:'changeCtrl',
+		controllerAs:'change',
+		permission:['admin','staff'],
+		authenticate:true		
 	})
 
 	.when('/logout',{
@@ -138,32 +185,43 @@ var app=angular.module('appRoutes',['ngRoute'])
 app.run(['$rootScope','Auth','$location', function($rootScope,Auth,$location){
 	
 	$rootScope.$on('$routeChangeStart',function(event,next,current){
-		if(next.$$route.authenticate==true){
-			if(!Auth.isLoggedIn()){
-				event.preventDefault();
-				$location.path('/');
-			} else if(next.$$route.permission){
-				Auth.getUser().then(function(data){
-					if(next.$$route.permission[0]!==data.data.role){
-						if(next.$$route.permission[1]!==data.data.role){
-							event.preventDefault();
-							$location.path('/about');
+		
+		if(next.$$route){
+			if(next.$$route.authenticate==true){
+				if(!Auth.isLoggedIn()){
+					event.preventDefault();
+					$location.path('/');
+				} else if(next.$$route.permission){
+					Auth.getUser().then(function(data){
+						if(next.$$route.permission[0]!==data.data.role){
+							if(next.$$route.permission[1]!==data.data.role){
+								event.preventDefault();
+								$location.path('/about');
 
+							}
 						}
-					}
-				});
+					});
 
 
+				}
+
+
+			} else if(next.$$route.authenticate==false){
+				if(Auth.isLoggedIn()){
+					event.preventDefault();
+					$location.path('/profile');
+				}
+
+			}	
+		}
+		else{
+			if(Auth.isLoggedIn()){
+				event.preventDefault();
+				$location.path('/profile');
 			}
 
-
-		} else if(next.$$route.authenticate==false){
-			// if(Auth.isLoggedIn()){
-			// 	event.preventDefault();
-			// 	$location.path('/profile');
-			// }
-
 		}
+		
 	});
 
 }]);

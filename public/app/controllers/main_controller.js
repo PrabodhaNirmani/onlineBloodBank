@@ -1,6 +1,6 @@
 angular.module('mainController',['authServices','userServies'])
 
-.controller('mainCtrl',function(Auth,User,AuthToken,$route,$timeout,$window,$location,$rootScope,$interval){
+.controller('mainCtrl',function(Auth,User,AuthToken,$route,$timeout,$window,$location,$rootScope,$interval,$routeParams){
 	var app=this;
 	app.loadMe=false;
 		
@@ -31,7 +31,7 @@ angular.module('mainController',['authServices','userServies'])
 						app.showModal(1);
 					}
 					else{
-						console.log('token os still vallid');
+						console.log('token is still vallid');
 					}
 
 				}
@@ -84,9 +84,12 @@ angular.module('mainController',['authServices','userServies'])
 		app.choice=true;
 
 
-		User.renewSession(app. username).then(function(data){
+		User.renewSession(app.username).then(function(data){
+			
 			if(data.data.success){
 				AuthToken.setToken(data.data.token);
+
+				 
 				app.checkSession();
 
 			}
@@ -146,6 +149,8 @@ angular.module('mainController',['authServices','userServies'])
 	this.doLogin=function(loginData,valid){
 		app.errorMsg=false;
 		app.loading=true;
+		app.forgetU=false;
+		app.forgetP=false;
 		if(valid){
 
 			Auth.login(app.loginData).then(function(msg){
@@ -166,8 +171,23 @@ angular.module('mainController',['authServices','userServies'])
 		
 				}
 				else{
-					app.loading=false;
-					app.errorMsg=msg.data.message; 
+					app.loginData=null
+					if(msg.data.forgetPassword){
+						app.forgetP=true;
+						app.loading=false;
+						app.errorMsg=msg.data.message+"  "; 
+					}
+					else if(msg.data.forgetUsername){
+						app.loading=false;
+						app.forgetU=true;
+						app.errorMsg=msg.data.message+"  "; 
+					}
+					else{
+						app.loading=false;
+
+						app.errorMsg=msg.data.message+"  "; 	
+					}
+					
 				}
 			}); 
 		}
@@ -179,6 +199,39 @@ angular.module('mainController',['authServices','userServies'])
 		}
 
 	}
+
+	
+	
+
+
+	this.checkUsername=function(data){
+		app.checkingUsername=true;
+		app.usernameMsg=false;
+		app.usernameInvalid=false;
+
+		User.checkUsername(app.data).then(function(response){
+			
+			if(response.data.success){
+			
+				app.checkingUsername=false;
+				app.usernameMsg=response.data.message;
+				app.usernameInvalid=false;
+
+			}
+			else{
+			
+				app.checkingUsername=false;
+				app.usernameMsg=response.data.message;
+				app.usernameInvalid=true;
+
+			}
+
+		})
+
+
+	}
+
+
 
 	//logout option
 	this.logout=function(){

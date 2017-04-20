@@ -16,7 +16,7 @@
 					<input type="text" name="email" class="form-control" placeholder="Search for..." ng-model="registerDonation.regData.email" ng-minlength="5" ng-maxlength="35" ng-pattern="/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/" required>
 					<span class="input-group-btn">
 
-			        <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+			        <button class="btn btn-danger" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
 			      	</span>
 			      	
 			    </div>
@@ -82,6 +82,19 @@
 						</ul>
 						<br>
 					</div>
+					<div class="row" ng-class="{'has-success':(!registerDonation.emailInvalid && regForm.email.$valid && !regForm.email.$pristine),'has-error':registerDonation.emailInvalid ||(!regForm.email.$valid && !regForm.email.$pristine)||(regForm.$submitted && !regForm.email.$valid)}">
+						<!-- Email -->
+						<label>Email: </label>
+						<input type="text" name="email" id="email" placeholder="Enter email" class="form-control" ng-model="registerDonation.regData.email" ng-minlength="5" ng-maxlength="35" ng-pattern="/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/" ng-blur="registerDonation.checkEmail(regData)" required>
+						<p class="help-block" ng-show="(!regForm.email.$pristine && regForm.email.$error.required)||(regForm.$submitted && regForm.email.$error.required)">*Required</p>
+						<p class="help-block" ng-show="regForm.email.$valid && registerDonation.emailMsg && !regForm.email.$error.required">{{registerDonation.emailMsg }}</p>
+						<ul class="help-block" ng-show="(!regForm.email.$pristine && regForm.email.$error.pattern) || (!regForm.email.$pristine && regForm.email.$error.minlength) || (!regForm.email.$pristine && regForm.email.$error.maxlength)">
+							<li>Must contain @ sign</li>
+							<li>Must not contain any special charactors</li>
+							<li>Must be at least 5 charactors but no more than 35</li>				
+						</ul>
+				  		<br>
+					</div>
 					<div class="row">
 						<div class="col-sm-4" ng-class="{'has-success':(regForm.birthday.$valid && !regForm.birthday.$pristine),'has-error':(!regForm.birthday.$valid && !regForm.birthday.$pristine)||(regForm.$submitted && !regForm.birthday.$valid)}">
 							<!-- Birthday -->
@@ -131,19 +144,7 @@
 				  		<br>
 					</div>
 
-					<div class="row" ng-class="{'has-success':(!registerDonation.emailInvalid && regForm.email.$valid && !regForm.email.$pristine),'has-error':registerDonation.emailInvalid ||(!regForm.email.$valid && !regForm.email.$pristine)||(regForm.$submitted && !regForm.email.$valid)}">
-						<!-- Email -->
-						<label>Email: </label>
-						<input type="text" name="email" id="email" placeholder="Enter email" class="form-control" ng-model="registerDonation.regData.email" ng-minlength="5" ng-maxlength="35" ng-pattern="/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/" ng-blur="registerDonation.checkEmail(regData)" required>
-						<p class="help-block" ng-show="(!regForm.email.$pristine && regForm.email.$error.required)||(regForm.$submitted && regForm.email.$error.required)">*Required</p>
-						<p class="help-block" ng-show="regForm.email.$valid && registerDonation.emailMsg && !regForm.email.$error.required">{{registerDonation.emailMsg }}</p>
-						<ul class="help-block" ng-show="(!regForm.email.$pristine && regForm.email.$error.pattern) || (!regForm.email.$pristine && regForm.email.$error.minlength) || (!regForm.email.$pristine && regForm.email.$error.maxlength)">
-							<li>Must contain @ sign</li>
-							<li>Must not contain any special charactors</li>
-							<li>Must be at least 5 charactors but no more than 35</li>				
-						</ul>
-				  		<br>
-					</div>
+					
 
 					<div class="row">
 						<!-- Blood group -->
@@ -176,7 +177,7 @@
 					</div>
 					<br><br>
 
-			  		<button class="btn btn-inverse" type="submit">Submit</button>
+			  		<button class="btn btn-danger" type="submit">Submit</button>
 				
 				</form>
 				<div class="col-sm-offset-1 col-sm-10">

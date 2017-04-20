@@ -37,6 +37,7 @@
     <script src="app/controllers/main_controller.js"></script>
     <script src="app/controllers/donor_controller.js"></script>
     <script src="app/controllers/blood_controller.js"></script>
+    <script src="app/controllers/email_controller.js"></script>
     <!-- services -->
     <script src="app/services/user_services.js"></script>
     <script src="app/services/auth_services.js"></script>
@@ -78,13 +79,13 @@
                   <i class="fa fa-user"></i>  Logged in as {{main.role}} <b class="caret"></b></a>
                 <ul class="dropdown-menu">
                     <li>
-                        <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
+                        <a href="/profile"><i class="fa fa-fw fa-user"></i> Profile</a>
                     </li>
                     <!-- <li>
                         <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
                     </li> -->
                     <li>
-                        <a href="#"><i class="fa fa-fw fa-gear"></i> Change password</a>
+                        <a href="/change-password"><i class="fa fa-fw fa-gear"></i> Change password</a>
                     </li>
                     <li class="divider"></li>
                     <li>

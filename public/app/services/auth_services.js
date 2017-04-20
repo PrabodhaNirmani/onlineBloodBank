@@ -12,6 +12,25 @@ angular.module('authServices',[])
 		});
 	};
 
+	
+	
+	
+
+	authFactory.resetPassword=function(userData){
+		return $http.post('/api/reset-password',userData).then(function(msg){
+			AuthToken.setToken(msg.data.token);
+			
+			return msg
+		});
+	}
+
+	authFactory.saveUserStaff=function(data){
+		return $http.post('api/save-staff',data).then(function(msg){
+			AuthToken.setToken(msg.data.token);
+			
+			return msg
+		});
+	}
 	// Auth.isLoggedIn()
 	authFactory.isLoggedIn=function(){
 		if(AuthToken.getToken()){

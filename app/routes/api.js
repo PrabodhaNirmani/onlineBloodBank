@@ -27,7 +27,7 @@ module.exports=function(router){
 	//route login user
 	//http://localhost:port/api/authenticate
 	router.post('/authenticate',function(req,res){
-		User.findOne({username:req.body.username}).select('username password email role').exec(function(err,user){ 
+		User.findOne({username:req.body.username}).select('username password email role active').exec(function(err,user){ 
 			
 			if(err) {
 			
@@ -36,7 +36,7 @@ module.exports=function(router){
 			else{
 				if(!user){
 				
-					res.json({success:false, message:"Counld not authenticate user"+user});
+					res.json({success:false, message:"Counld not authenticate user",forgetUsername:true});
 				} 
 				else if(user){
 			  		if(req.body.password){
@@ -46,8 +46,10 @@ module.exports=function(router){
 			  			res.json({success:false,message:"No password provided"});
 			  		}
 					if(!validPassword){
-						res.json({success:false,message:"Counld not authenticate password"});
+						res.json({success:false,message:"Counld not authenticate password",forgetPassword:true});
 
+					}else if(!user.active){
+						res.json({success:false,message:"Account is not yet activated. Please check your email for activation link",expired:true});
 					}else{
 						var token=jwt.sign({username:user.username,role:user.role,email:user.email},secret,{ expiresIn: '1h' });
 						res.json({success:true,message:"User authenticated successfully",token:token});
@@ -70,8 +72,19 @@ module.exports=function(router){
 				// return handleError(err);
 			}
 			else{
-				if(!user){	
-					res.json({success:true, message:"Valid e-mail"});
+				if(!user){
+					emailExistence.check(req.body.email, function(err,response){
+						if(response){
+							res.json({success:true, message:"Valid e-mail"});
+						}
+						else{
+							//sending non exixtance of the mail box
+							res.json({success:false,message:"Mailbox does not exist for the given email address"});
+
+						}
+		       
+		   			});
+					
 				} 
 				else if(user){
 			  		res.json({success:false, message:"E-mail already exists"});	
@@ -109,7 +122,18 @@ module.exports=function(router){
 			}
 			else{
 				if(!user){	
-					res.json({success:true, message:"Valid e-mail"});
+					emailExistence.check(req.body.email, function(err,response){
+						if(response){
+							res.json({success:true, message:"Valid e-mail"});
+						}
+						else{
+							//sending non exixtance of the mail box
+							res.json({success:false,message:"Mailbox does not exist for the given email address"});
+
+						}
+		       
+		   			});
+					
 				} 
 				else if(user){
 			  		res.json({success:false, message:"E-mail already exists"});	
@@ -117,6 +141,333 @@ module.exports=function(router){
 			}		
 		});		
 	});
+
+	router.put('/activate/:token',function(req,res){
+		StaffMember.findOne({temporyToken:req.params.token}).select('email').exec(function(err,user){
+			if(err) throw err;
+			var token=req.params.token;
+			jwt.verify(token, secret, function(err, decoded) {
+				if(err){
+					res.json({success:false,message:"Activation link has expired   ",active:false});
+					// console.log(err)
+				}
+				else if(!user){
+					// console.log(user);
+					res.json({success:false,message:"User already activated   ",active:true});	
+				}
+				else{
+					res.json({success:true,message:"Fill the form and register",email:user.email});		
+
+				}
+			});
+
+		});
+
+
+	});
+
+	router.post('/save-staff',function(req,res){
+		var user=new User();
+		user.email=req.body.email;
+		user.username=req.body.username;
+		user.password=req.body.password;
+		user.role="staff";
+		// user.temporyToken=null;
+		user.active=true;
+		console.log(user);
+		if(req.body.username==null||req.body.username==''|| req.body.password==null||req.body.password==''||req.body.passwordC==null||req.body.passwordC==''){
+			
+			res.json({success: false,message:"Ensure that Username and password provided"})
+		}
+		else if(req.body.password!=req.body.passwordC){
+			res.json({success: false,message:"Password and confirm password did not match"})
+		}
+		else
+		{	
+			//creating user
+			user.save(function(err){
+				if(err){
+					
+					res.json({success: false,message:err})
+				}
+				else{
+					StaffMember.findOne({email:user.email}).select('temporyToken active').exec(function(err,staff){
+						if(err){
+
+						}
+						else{
+							staff.temporyToken=null;
+							staff.active=true;
+							staff.save();
+						}
+					});
+					var token=jwt.sign({username:user.username,role:user.role,email:user.email},secret,{ expiresIn: '1h' });
+					res.json({success:true,message:"User authenticated successfully",token:token});
+					
+				}
+				
+			});		
+	 
+		}
+
+	})
+	
+
+	//route for the requesting activation link again
+	router.post('/resend',function(req,res){
+	
+		StaffMember.findOne({email:req.body.email}).select('name email temporyToken active').exec(function(err,staff){ 
+			
+			if(err) {
+			
+				// return handleError(err);
+			}
+			else{
+				if(!staff){
+				
+					res.json({success:false, message:"This email address does not belongs to staff member"});
+				} 
+				else if(staff){
+			  		if(staff.active==true){
+			  			res.json({success:false,message:"Accound is already activated"});
+			  			
+			  		}
+			  		
+			  		else{
+			  			var sendLink=function(){
+			  				//creating new tempory token for 1 day
+			  				staff.temporyToken=jwt.sign({email:staff.email},secret,{ expiresIn: '1d' });
+							staff.active=false;
+			
+							//safa the token
+
+							staff.save(function(error){
+						
+								if(error){
+							
+									res.json({success: false,message:"Email or username already exists"})	
+							
+								}
+								else{
+									//email object for the requesting email
+									var email = {
+									  from: 'Localhost staff,bloodbank@localhost.com',
+									  to: staff.email,
+									  subject: 'Activation link request',
+									  text: 'Hello '+staff.name+'. You have recently request for activation link for your account of ONLINE BLOOD BANK for staff member access. You can activate your account using this link : http://localhost:8080/activate. Thank You!!!',
+									  html: 'Hello '+staff.name+'. You have recently request for activation link for your account of ONLINE BLOOD BANK for staff member access. You can activate your account using this link : <a href="http://localhost:8080/activate/'+staff.temporyToken+'">http://localhost:8080/activate</a><br><br><br>Thank You!!!'
+									};
+
+									//sending the email
+									client.sendMail(email, function(err, info){
+									    if (err ){
+									      console.log(err);
+									    }
+									    else {
+									    	//sending the sucess message
+									    	res.json({success: true,message:"Activation link sent to "+staff.email});		
+											console.log('Message sent: ' + info);
+									    }
+									});							
+								}
+							});
+
+			  			}
+
+			  			if(staff.temporyToken!=null){
+				  			jwt.verify(staff.temporyToken, secret, function(err, decoded) {
+								if(err){
+									sendLink();
+								}
+								else{
+									res.json({success:false,message:"Activation link already sent to "+staff.email});
+								}
+							});
+			  			
+
+			  			}
+			  			else{
+			  				sendLink()
+			  			}
+
+			  			
+						
+			  			
+			  		}		
+				}
+			}			
+		});
+		
+	});
+
+	//route to send username to the email : forgot username
+	router.get('/reset-username/:email',function(req,res){
+		//find user from the email 
+		User.findOne({email:req.params.email}).select().exec(function(err,user){
+			if(err){
+				res.json({success:false,message:err});
+			}
+			else if(!user){
+				res.json({success:false,message:"This email is not registreed"})
+			}
+			else{
+				//email object
+				var email = {
+				  from: 'Localhost staff,bloodbank@localhost.com',
+				  to: user.email,
+				  subject: 'Username request',
+				  text: 'Hello... You have recently request for username of your account. Username : ' +user.username+'Thank You!!!',
+				  html: 'Hello... You have recently request for username of your account. <br><br>Username : '+user.username+'<br><br>Thank You!!!'
+				};
+
+				//sending the email
+				client.sendMail(email, function(err, info){
+				    if (err ){
+				      console.log(err);
+				    }
+				    else {
+				    	//sending the sucess message
+						res.json({success:true,message:"Username has been sent to the email! "});
+						console.log('Message sent: ' + info);
+				    }
+				});							
+
+
+			}
+		})
+	});
+
+
+	//route to send reset password link to the email
+	router.put('/reset-password',function(req,res){
+		//finde user using username
+		User.findOne({username:req.body.username}).select().exec(function(err,user){
+			if(err){
+				res.json({success:false,message:err});
+			}
+			else if(!user){
+				res.json({success:false,message:"Username not found"});
+			}
+			else{
+				var sendPasswordLink=function(){
+					//create password reset link for 30 minitues
+					user.resetToken=jwt.sign({username:user.username,role:user.role,email:user.email},secret,{ expiresIn: '30m' });
+					user.save(function(error){
+						if(error){
+							res.json({success:false,message:error});
+						}
+						else{
+							//email object
+							var email = {
+							  from: 'Localhost staff,bloodbank@localhost.com',
+							  to: user.email,
+							  subject: 'Password reset request',
+							  text: 'Hello... You have recently request for reset password of your account. You can use this link to reset your password : http://localhost:8080/reset-password<br>',
+							  html: 'Hello... You have recently request for reset password of your account. <br><br>You can use this link to reset your password  : <a href="http://localhost:8080/reset-password/'+user.resetToken+'">http://localhost:8080/reset-password</a><br><br><br>Thank You!!!'
+							};
+
+							//sending the email
+							client.sendMail(email, function(err, info){
+							    if (err ){
+							      console.log(err);
+							    }
+							    else {
+							    	//sending the sucess message
+									res.json({success:true,message:"Password reset link has been sent to the email! "});
+									console.log('Message sent: ' + info);
+							    }
+							});			
+							
+						}
+					});
+									
+
+				}
+
+				if(user.resetToken!=null){
+				
+		  			jwt.verify(user.resetToken, secret, function(err, decoded) {
+						if(err){
+							sendPasswordLink();
+						}
+						else{
+							
+							res.json({success:true,message:"Password reset link has already been sent to "+user.email});
+						}
+					});
+	  			
+
+	  			}
+	  			else{
+	  				sendPasswordLink()
+	  			}
+				
+				
+
+			}
+		})
+
+	});
+
+	//checking the token is valid
+	router.get('/reset-password/:token',function(req,res){
+		User.findOne({resetToken:req.params.token}).select().exec(function(err,user){
+			if(err) throw err;
+
+			var token=req.params.token;
+
+			jwt.verify(token, secret, function(err, decoded) {
+				if(err){
+					res.json({success:false,message:"Password reset link has been expired.   "});
+				}
+				else if(!user){
+					res.json({success:false,message:"Password reset link has been expired.   "});
+				}
+				else{
+					res.json({success:true,user:user});
+
+				}
+			});
+			
+		});
+
+	});
+
+	//reseting the password
+	router.post('/reset-password',function(req,res){
+		User.findOne({username:req.body.username}).select().exec(function(err,user){
+			if(err){
+				res.json({success:false,message:err});
+			}
+			else{
+				var password=req.body.password;
+				var passwordC=req.body.passwordC;
+
+				if(password!=passwordC){
+					res.json({success:false,message:"Password and confirm password did not match"});
+				}
+				else{
+					user.password=password;
+					user.resetToken=null;
+					var token=jwt.sign({username:user.username,role:user.role,email:user.email},secret,{ expiresIn: '1h' });
+					user.save(function(error){
+						if (error) {
+							res.json({success:false,message:error});
+						}
+						else{
+							res.json({success:true,message:"Password has been reset successfully",token:token});
+						}
+					});
+				}
+			}
+
+		});
+
+	});
+
+
+
+
 
 	//middleware
 	router.use(function(req,res,next){
@@ -139,6 +490,8 @@ module.exports=function(router){
 		}
 	});
 
+	
+
 	router.post('/me',function(req,res){
 		
 		res.send(req.decoded); 
@@ -146,14 +499,19 @@ module.exports=function(router){
 	});
 
 	//renew token for the user's request
-	router.get('/renewToken/:usename',function(req,res){
+	router.get('/renewToken/:username',function(req,res){
+	
 		User.findOne({username:req.params.username}).select().exec(function(err,user){
+			console.log(user);
 			if(err) throw err;
 			if(!user){
+	
 				res.json({success:false,message:"No user was found"});
 			}
 			else{
-				var newToken=jwt.sign({username:user.username},secret,{ expiresIn: '1h' });
+				// var token=jwt.sign({username:user.username,role:user.role,email:user.email},secret,{ expiresIn: '5m' });
+
+				var newToken=jwt.sign({username:user.username,role:user.role,email:user.email},secret,{ expiresIn: '1h' });
 				res.json({success:true,token:newToken});
 			}
 		});
@@ -166,7 +524,7 @@ module.exports=function(router){
 		user.username=req.body.username;
 		user.password=req.body.password;
 		user.role="admin";
-		//user.temporyToken=null;
+		// user.temporyToken=null;
 		user.active=true;
 		
 		if(req.body.username==null||req.body.username==''|| req.body.password==null||req.body.password==''||req.body.email==null||req.body.email==''||req.body.passwordC==null||req.body.passwordC==''){
@@ -211,7 +569,8 @@ module.exports=function(router){
 		
 		staff.tele_no=req.body.tele_no;
 		staff.email=req.body.email;
-		
+		staff.temporyToken=jwt.sign({email:staff.email},secret,{ expiresIn: '5s' });
+		staff.active=false;
 		
 		if(req.body.email==null||req.body.email==''||req.body.name==null||req.body.name=='' || req.body.tele_no==null||req.body.tele_no==''){
 			
@@ -219,49 +578,27 @@ module.exports=function(router){
 		}
 		else
 		{
-			//password generate function
-			var randomString = function(length) {
-			    var text = "";
-			    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-			    for(var i = 0; i < length; i++) {
-			        text += possible.charAt(Math.floor(Math.random() * possible.length));
-			    }
-			    return text;
-			}
-			var password=randomString(10);
-			//creating user
-
-			var user=new User();
-			user.email=staff.email;
-			user.password=password;
-			user.username=user.email;
-			user.role="staff";
-			//user.temporyToken=var token=jwt.sign({username:user.username,role:user.role,email:user.email},secret,{ expiresIn: '2d' });
+			
+			
 			//cheking the existance of the email given
-			emailExistence.check(user.email, function(err,response){
+			emailExistence.check(staff.email, function(err,response){
 				if(response){
 					//creating user
-					user.save(function(err){
-						if(err){
-							
-							res.json({success: false,message:"Email or username already exists"})
-						}
-						else{
-							
-							//creating staff member
-							staff.save(function(error){
+					staff.save(function(error){
+						
 								if(error){
-									res.json({success: false,message:"Email or username already exists"})
-
+							
+									res.json({success: false,message:"Email or username already exists"})	
+							
 								}
 								else{
-									//sending email  to the staff member with login details
+							
 									var email = {
 									  from: 'Localhost staff,bloodbank@localhost.com',
-									  to: user.email,
+									  to: staff.email,
 									  subject: 'Loging details to the ONLINE BLOOD BANK',
-									  text: 'Hello '+staff.name+'. Your account of ONLINE BLOOD BANK for staff member access was created. This e-mail contains login details to the system. Username :'+user.username+'Password : '+password+'You can activate your account using this link : http://localhost:8080/login. Thank You!!!',
-									  html: 'Hello '+staff.name+'. Your account of ONLINE BLOOD BANK for staff member access was created. This e-mail contains login details to the system.<br><br><b>Username : </b>'+user.username+'<br><b>Password : </b>'+password+'<br><br><br>You can activate your account using this link : <a href="http://localhost:8080/login">http://localhost:8080/login.</a><br><br><br>Thank You!!!'
+									  text: 'Hello '+staff.name+'. Your account of ONLINE BLOOD BANK for staff member access was created. You can activate your account using this link : http://localhost:8080/activate. Thank You!!!',
+									  html: 'Hello '+staff.name+'. Your account of ONLINE BLOOD BANK for staff member access was created. You can activate your account using this link : <a href="http://localhost:8080/activate/'+staff.temporyToken+'">http://localhost:8080/activate</a><br><br><br>Thank You!!!'
 									};
 
 									client.sendMail(email, function(err, info){
@@ -273,12 +610,9 @@ module.exports=function(router){
 											console.log('Message sent: ' + info);
 									    }
 									});							
-								}
-							});
-							
-						}
 						
-					}); 	
+								}
+					});
 				}
 				else{
 					res.json({success:false,message:"Mailbox does not exist for the given email address"});
@@ -291,6 +625,111 @@ module.exports=function(router){
 		}
 	});
 	
+	//route to get check password with curent password
+
+	router.post('/check-password',function(req,res){
+		
+		var password=req.body.current;
+
+		var token=req.body.token||req.body.query||req.headers['x-access-token']; 
+		
+		
+		if(token){
+			// verify a token
+			jwt.verify(token, secret, function(e, decoded) {
+				if(e){
+					res.json({success:false,message:"Token invalid"});
+				}
+				else{
+					var username=decoded.username;
+					User.findOne({username:username}).select().exec(function(err,user){
+						if(err){
+							res.json({success:false,message:err});
+						}
+						else if(!user){
+							res.json({success:false,message:"No user found"});	
+
+						}
+						else if(password){
+							var validPassword=user.comparePassword(password);
+
+							if(!validPassword){
+								res.json({success:false,message:"Current password did not match"});
+
+							}else{
+							
+								res.json({success:true,message:"Current password is matched"});
+							}
+				
+
+						}
+						else{
+							//res.json({success:false,message:"No password provided"});								
+						}
+					});
+				}
+			});
+		}
+		else{
+			res.json({success:false,message:"No token provided"})
+		}
+	
+
+	});
+	
+
+	router.post('/change-password',function(req,res){
+
+		var token=req.body.token||req.body.query||req.headers['x-access-token']; 
+		
+		
+		if(token){
+			// verify a token
+			jwt.verify(token, secret, function(e, decoded) {
+				if(e){
+					res.json({success:false,message:"Token invalid"});
+				}
+				else{
+					var username=decoded.username;
+
+					User.findOne({username:username}).select().exec(function(err,user){
+						if(err){
+							res.json({success:false,message:err});
+						}
+						else if(!user){
+							res.json({success:false,message:"No user found"});	
+
+						}
+						else {
+							if(user.comparePassword(req.body.current)){
+								if(req.body.password==req.body.passwordC){
+									user.password=req.body.password;
+									user.save(function(error){
+										if (error){
+											res.json({success:false,message:error});	
+
+										}
+										else{
+											res.json({success:true,message:"Password reset successfully"});											
+										}
+									});
+								}
+								else{
+									res.json({success:false,message:"Password and confirm password did not match"});
+								}	
+							}
+							else{
+								res.json({success:false,message:"Current password did not match"});
+							}
+							
+							
+						}
+					});
+				}
+			});
+		}
+
+	});
 
 	//route for register donor
 	router.post('/create-donor',function(req,res){

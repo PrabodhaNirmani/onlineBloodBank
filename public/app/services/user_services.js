@@ -25,5 +25,42 @@ angular.module('userServies',[])
 		return $http.post('/api/check-username',data);
 	}
 
+	userFactory.activateStaff=function(token){
+		
+		return $http.put('api/activate/'+token);
+
+	}
+
+	userFactory.checkCredentials=function(data){
+		return $http.post('api/resend',data);
+	}
+
+	userFactory.requestUsername=function(email){
+		return $http.get('api/reset-username/'+email);
+	}
+
+	userFactory.requestPasswordReset=function(data){
+		return $http.put('/api/reset-password',data)
+	}
+
+	userFactory.resetUser=function(token){
+		return $http.get('/api/reset-password/'+token);
+	}
+
+	userFactory.compairePassword=function(data){
+		
+		return $http.post('/api/check-password/',data);
+
+	}
+
+	userFactory.changePassword=function(userData){
+		return $http.post('/api/change-password',userData)
+	}
+	
+
+	
 	return userFactory;
 });
+
+
+

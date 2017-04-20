@@ -1,0 +1,45 @@
+
+<div class="container col-sm-8">
+	<div class="page-header">
+		<h1>Forgot Username</h1>
+	</div>
+	<form  name="regForm" ng-submit="username.requestUsername(regForm.data,regForm.$valid)" novalidate >
+		<div ng-class="{'has-success':(regForm.email.$valid && !regForm.email.$pristine),'has-error':(!regForm.email.$valid && !regForm.email.$pristine)||(regForm.$submitted && !regForm.email.$valid)}">
+			<!-- Email -->
+			<label>Email: </label>
+			<input type="text" name="email" id="email" placeholder="Enter your email address" class="form-control" ng-model="username.data.email" ng-minlength="5" ng-maxlength="35" ng-pattern="/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/" required ng-disabled="username.disable">
+
+			<p class="help-block" ng-show="(!regForm.email.$pristine && regForm.email.$error.required)||(regForm.$submitted && regForm.email.$error.required)">*Required</p>
+			
+			<ul class="help-block" ng-show="(!regForm.email.$pristine && regForm.email.$error.pattern) || (!regForm.email.$pristine && regForm.email.$error.minlength) || (!regForm.email.$pristine && regForm.email.$error.maxlength)">
+				<li>Must contain @ sign</li>
+				<li>Must not contain any special charactors</li>
+				<li>Must be at least 5 charactors but no more than 35</li>				
+			</ul>
+			<br>
+		</div>
+
+		<button class="btn btn-danger" type="submit" ng-disabled="username.disable">Submit</button>
+			
+
+
+	</form>
+	<br>
+	<div class="jumbotron text-center" ng-show="username.loading">
+		<span class="glyphicon glyphicon-repeat spinner"></span>
+		<p>Loading...</p>
+	</div>
+
+	<div class="row show-hide-message" ng-show="username.successMsg">
+	<br>
+		<div class="alert alert-success">{{username.successMsg}}</div>
+	</div>
+	
+	<div class="row show-hide-message" ng-show="username.errorMsg">
+	<br>
+		<div class="alert alert-danger">{{username.errorMsg}}</div>
+	</div>
+
+		<br><br>
+	
+</div>

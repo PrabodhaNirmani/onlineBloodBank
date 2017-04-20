@@ -1,23 +1,10 @@
-<div class="scrollable">
+
 	<div class="container col-sm-8">
 		<div class="page-header">
 			<h1>User Login</h1>
 		</div>
 		<form  name="regForm" ng-submit="main.doLogin(loginData,regForm.$valid);" novalidate >
 			
-			<!-- <div ng-class="{'has-success':(regForm.email.$valid && !regForm.email.$pristine),'has-error':(!regForm.email.$valid && !regForm.email.$pristine)||(regForm.$submitted && !regForm.email.$valid)}">
-				<label>Email: </label>
-				<input type="text" name="email" id="email" placeholder="Enter email address" class="form-control" ng-model="main.loginData.email" ng-pattern="/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/" required> 
-				<p class="help-block" ng-show="(!regForm.email.$pristine && regForm.email.$error.required)||(regForm.$submitted && regForm.email.$error.required)">*Required</p>
-				<ul class="help-block" ng-show="(!regForm.email.$pristine && regForm.email.$error.pattern)">
-					<li>Must contain @ sign</li>
-					<li>Must not contain any special charactors</li>
-					
-				</ul>
-				<br>
-				
-			</div>
- -->
 			<div ng-class="{'has-success':(regForm.username.$valid && !regForm.username.$pristine),'has-error':(!regForm.username.$valid && !regForm.username.$pristine)||(regForm.$submitted && !regForm.username.$valid)}">
 				<label>Username: </label>
 				<input type="text" name="username" id="username" placeholder="Enter username" class="form-control" ng-model="main.loginData.username" required> 
@@ -36,10 +23,25 @@
 				<br>
 			 
 			</div>
+			<div class="row">
+				<div ng-show="main.errorMsg && main.forgetP" class="col-sm-offset-10">
+					<a href="/forgot-password"> Forgot Password</a>
+				</div>	
+			</div>
+
+			<div class="row">
 			
+				<div ng-show="main.errorMsg && main.forgetU" class="col-sm-offset-10">
+					<a href="/forgot-username"> Forgot Username</a>
+				</div>	
+			</div>
 			
-			<button class="btn btn-inverse" type="submit">Submit</button>
-				
+			<div >
+			
+				<button class="btn btn-danger" type="submit">Login</button>
+			
+			</div>	
+			
 
 
 		</form>
@@ -60,11 +62,3 @@
 		</div>
 		
 	</div>
-</div>
-
-<style type="text/css">
-	.scrollable {
-	    height: 600px; /* or any value */
-	    overflow-y: auto;
-	}
-</style>
