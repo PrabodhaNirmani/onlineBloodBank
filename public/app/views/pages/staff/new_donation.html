@@ -9,11 +9,11 @@
 				<h3>New donation</h3>
 			</div> -->
 
-				<form name="regForm" ng-submit="registerDonation.donate(donorData,regForm.$valid);" novalidate>
+				<form name="regForm" ng-submit="donation.donate(donorData,regForm.$valid);" novalidate>
 					<div class="row">
 						<!-- Name -->
 						<label>Name in Full: </label>
-						<input type="text" name="name" id="name" placeholder="Enter name" class="form-control" ng-model="registerDonation.donorData.name" readonly>		
+						<input type="text" name="name" id="name" placeholder="Enter name" class="form-control" ng-model="donation.donorData.name" readonly>		
 						
 						<br>
 
@@ -21,7 +21,7 @@
 					<div class="row">
 						<!-- Email -->
 						<label>Email: </label>
-						<input type="text" name="email" id="email" placeholder="Enter email" class="form-control" ng-model="registerDonation.donorData.email" readonly>		
+						<input type="text" name="email" id="email" placeholder="Enter email" class="form-control" ng-model="donation.donorData.email" readonly>		
 						
 						<br>
 
@@ -30,13 +30,13 @@
 						<div class="col-sm-2">
 						<!-- ABO -->
 							<label>ABO: </label>
-							<input type="text" name="abo" id="abo" placeholder="Enter abo" class="form-control" ng-model="registerDonation.donorData.abo" readonly>		
+							<input type="text" name="abo" id="abo" placeholder="Enter abo" class="form-control" ng-model="donation.donorData.abo" readonly>		
 							
 						</div>
 						<div class="col-sm-2">
 							<!-- RH -->
 							<label>RH: </label>
-							<input type="text" name="rh" id="rh" placeholder="Enter rh" class="form-control" ng-model="registerDonation.donorData.rh" readonly>		
+							<input type="text" name="rh" id="rh" placeholder="Enter rh" class="form-control" ng-model="donation.donorData.rh" readonly>		
 							
 						<br>
 
@@ -47,7 +47,7 @@
 						<div class="col-sm-8">
 							<!-- Donation date -->
 							<label>Date of the donation: </label>
-							<input type="date" name="date" id="date" placeholder="Enter date of the donation" class="form-control" ng-model="registerDonation.donorData.last_donated_date" ng-max="registerDonation.today" required>		
+							<input type="date" name="date" id="date" placeholder="Enter date of the donation" class="form-control" ng-model="donation.donorData.last_donated_date" ng-max="donation.today" required>		
 							<p class="help-block" ng-show="(!regForm.date.$pristine && regForm.date.$error.required)||(regForm.$submitted && regForm.date.$error.required)">*Required</p>
 							<ul class="help-block" ng-show="(!regForm.date.$pristine && regForm.date.$error.max)|| (!regForm.date.$valid && !regForm.date.$pristine)">
 								<li>Date must not be a future date</li>
@@ -67,18 +67,18 @@
 
 		<div class="col-sm-6 col-sm-offset-3">
 		<br>
-			<div class="jumbotron text-center" ng-show="registerDonation.loading">
+			<div class="jumbotron text-center" ng-show="donation.loading">
 				<span class="glyphicon glyphicon-repeat spinner"></span>
 				<p>Loading...</p>
 			</div>
 			<!-- success : search results -->
-			<div class="row show-hide-message text-center" ng-show="registerDonation.successMsg">
-				<div class="alert alert-success">{{registerDonation.successMsg}}</div>
+			<div class="row show-hide-message text-center" ng-show="donation.successMsg">
+				<div class="alert alert-success">{{donation.successMsg}}</div>
 			</div>
 			
 			<!-- error -->
-			<div class="row show-hide-message text-center" ng-show="registerDonation.errorMsg">
-				<div class="alert alert-danger">{{registerDonation.errorMsg}}</div>
+			<div class="row show-hide-message text-center" ng-show="donation.errorMsg">
+				<div class="alert alert-danger">{{donation.errorMsg}}</div>
 			</div>
 		</div>
 	</div>

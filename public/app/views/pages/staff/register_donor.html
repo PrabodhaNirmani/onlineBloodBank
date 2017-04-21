@@ -58,13 +58,13 @@
 					<div class="row" ng-class="{'has-success':(regForm.name.$valid && !regForm.name.$pristine),'has-error':(!regForm.name.$valid && !regForm.name.$pristine)||(regForm.$submitted && !regForm.name.$valid)}">
 						<!-- Name -->
 						<label>Name in Full: </label>
-						<input type="text" name="name" id="name" placeholder="Enter name" class="form-control" ng-model="registerDonation.regData.name" ng-pattern="/^(([a-zA-Z]{3,20})+[ ]+([a-zA-Z]{3,20})+)+$/" ng-minlength="3" ng-maxlength="20" required>		
+						<input type="text" name="name" id="name" placeholder="Enter name" class="form-control" ng-model="registerDonation.regData.name" ng-pattern="/^(([a-zA-Z]{3,20})+[ ]+([a-zA-Z]{3,20})+)+$/" ng-minlength="3" ng-maxlength="40" required>		
 						<p class="help-block" ng-show="(!regForm.name.$pristine && regForm.name.$error.required)||(regForm.$submitted && regForm.name.$error.required)">*Required</p>
 						<ul class="help-block" ng-show="(!regForm.name.$pristine && regForm.name.$error.pattern) || (!regForm.name.$pristine && regForm.name.$error.minlength) || (!regForm.name.$pristine && regForm.name.$error.maxlength)">
 							<li>Must have space between first name and last name</li>
 							<li>Must not contain any special charactors</li>
 							<li>Must not contain any number</li>
-							<li>Must be at least 3 charactors but no more than 20</li>				
+							<li>Must be at least 3 charactors but no more than 40</li>				
 						</ul>
 						<br>
 

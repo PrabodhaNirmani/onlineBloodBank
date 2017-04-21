@@ -111,10 +111,36 @@ var app=angular.module('appRoutes',['ngRoute'])
 
 	.when('/search-donor',{
 		templateUrl:'app/views/pages/staff/search_donor.html',
+		controller:'searchDonorCtrl',
+		controllerAs:'search',
+		authenticate:true,
+		permission:['admin','staff']
+	})
+
+	
+	
+	.when('/update-donor',{
+		templateUrl:'app/views/pages/staff/update_donation.html',
 		controller:'regDonation',
 		controllerAs:'registerDonation',
 		authenticate:true,
-		permission:['admin','staff']
+		permission:['staff']
+	})
+
+	.when('/new-donation',{
+		templateUrl:'app/views/pages/staff/new_donation.html',
+		controller:'donationCtrl',
+		controllerAs:'donation',
+		authenticate:true,
+		permission:['staff']
+	})
+
+	.when('/donor-profile',{
+		templateUrl:'app/views/pages/staff/blood_donor_profile.html',
+		authenticate:true,
+		permission:['admin','staff'],
+		controller:'profileCtrl',
+		controllerAs:'profile'
 	})
 
 	.when('/search-blood',{
@@ -132,30 +158,6 @@ var app=angular.module('appRoutes',['ngRoute'])
 		authenticate:true,
 		permission:['staff']
 
-	})
-	
-	.when('/update-donor',{
-		templateUrl:'app/views/pages/staff/update_donation.html',
-		controller:'regDonation',
-		controllerAs:'registerDonation',
-		authenticate:true,
-		permission:['staff']
-	})
-
-	.when('/new-donation',{
-		templateUrl:'app/views/pages/staff/new_donation.html',
-		controller:'regDonation',
-		controllerAs:'registerDonation',
-		authenticate:true,
-		permission:['staff']
-	})
-
-	.when('/donor-profile',{
-		templateUrl:'app/views/pages/staff/blood_donor_profile.html',
-		authenticate:true,
-		permission:['admin','staff']
-		// controller:'regDonation',
-		// controllerAs:'registerDonation'
 	})
 
 	.when('/donation-campaign',{

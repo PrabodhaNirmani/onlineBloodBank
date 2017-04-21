@@ -1,6 +1,6 @@
 angular.module('bloodCtrl',['bloodServices'])
 
-.controller('searchCtrl',function($location,$timeout,Blood){
+.controller('searchCtrl',function($location,$timeout,Blood,BloodID){
 
 	var app=this;
 	app.limit=1;
@@ -63,5 +63,79 @@ angular.module('bloodCtrl',['bloodServices'])
 		app.limit=undefined;
 
 	}
+
+	app.loadReleasePage=function(id){
+		if(id!=null){
+			BloodID.setId(id);
+
+			$location.path('/release-blood');
+
+		}
+
+	}
+})
+
+.controller('releaseCtrl',function($location,$timeout,Blood){
+
+	var app=this;
+	app.blood=null;
+	
+	Blood.releaseBloodRequest().then(function(data){
+		if(data.data.success){
+			app.blood=data.data.blood;
+			console.log(app.blood);
+
+		}
+		else{
+			$location.path('/search-blood');
+		}
+
+	});
+
+	app.releaseBlood=function(){
+		app.successMsg=false;
+		app.errorMsg=false;
+		app.loading=true;
+		Blood.releaseBlood(app.blood._id).then(function(msg){
+			
+			if(msg.data.success){
+					
+				$timeout(function(){
+					app.successMsg=msg.data.message+'.... Redirecting...';	
+					app.loading=false;
+					$timeout(function(){
+						$location.path('/search-blood');
+						app.successMsg=false;
+						app.errorMsg=false;
+						
+					},2000);
+					
+					
+				},2000);
+			}
+			else{	
+	
+			
+				app.errorMsg=msg.data.message+'.... Redirecting...';
+				app.loading=false;
+				$timeout(function(){
+					$location.path('/search-blood');
+					app.successMsg=false;
+					app.errorMsg=false;
+					
+				},2000);
+				
+			}
+
+					
+				
+
+		});
+
+	}
+
+
+	
 });
+
 

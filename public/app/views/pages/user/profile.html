@@ -1,1 +1,40 @@
-<h1>User profile page</h1>
+<div class="container col-sm-10">
+	<div class="page-header"><h1>User Profile</h1></div>
+
+	<div class="col-sm-3">
+		<div class="card col-sm-offset-1" style="width: 15rem;">
+			<img class="card-img-top" src="../assets/img/person.png" alt="Card image cap">
+
+			<div class="card-block">
+				<h4 class="card-title" align="center">{{main.role[0].toUpperCase()+main.role.substr(1)}}</h4>
+				<!-- word[0].toUpperCase() + word.substr(1) -->
+			</div>
+			
+		</div>
+	</div>
+	<div class="col-sm-9">
+
+
+        <div class="list-group">
+	                    
+			<div class="list-group-item">
+				<label>Name</label>
+				<input class="form-control" value="Prabodha Harankahadeniya" type="text" name="name" id="name" readonly>
+			</div>
+			<div class="list-group-item ">
+				<label>Email</label>
+				<input class="form-control" value="{{main.email}}" type="text" name="email" id="email" readonly>
+			</div>    
+			<div class="list-group-item ">
+				<label>Role</label>
+				<input class="form-control" value="{{main.role[0].toUpperCase()+main.role.substr(1)}}" type="text" name="role" id="role" readonly>
+			</div>    
+
+		</div>
+                    
+		
+	</div>
+	
+	
+</div>
+		

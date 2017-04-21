@@ -1,15 +1,17 @@
-angular.module('mainController',['authServices','userServies'])
+angular.module('mainController',['authServices','userServies','bloodServices'])
 
-.controller('mainCtrl',function(Auth,User,AuthToken,$route,$timeout,$window,$location,$rootScope,$interval,$routeParams){
+.controller('mainCtrl',function(Auth,User,Blood,AuthToken,$route,$timeout,$window,$location,$rootScope,$interval,$routeParams){
 	var app=this;
 	app.loadMe=false;
 		
+	
 	//checking logged users session
 	app.checkSession=function(){
 		if(Auth.isLoggedIn()){
 			app.checkingSession=true;
 			var interval=$interval(function(){
 				var token=$window.localStorage.getItem('token');
+				// Blood.expireBlood();
 				if(token==null){
 					$interval.cancel(interval);
 				}
@@ -36,6 +38,7 @@ angular.module('mainController',['authServices','userServies'])
 
 				}
 			},10000);
+
 		}
 
 	};
@@ -146,7 +149,7 @@ angular.module('mainController',['authServices','userServies'])
 	
 
 	//login function
-	this.doLogin=function(loginData,valid){
+	app.doLogin=function(loginData,valid){
 		app.errorMsg=false;
 		app.loading=true;
 		app.forgetU=false;
@@ -204,7 +207,7 @@ angular.module('mainController',['authServices','userServies'])
 	
 
 
-	this.checkUsername=function(data){
+	app.checkUsername=function(data){
 		app.checkingUsername=true;
 		app.usernameMsg=false;
 		app.usernameInvalid=false;
@@ -226,15 +229,14 @@ angular.module('mainController',['authServices','userServies'])
 
 			}
 
-		})
+		});
 
 
 	}
 
-
-
+	
 	//logout option
-	this.logout=function(){
+	app.logout=function(){
 		app.showModal(2);
 		
 	}

@@ -1,1 +1,73 @@
-<h1>Profile</h1>
+<div class="container col-sm-10" ng-show="profile.donorData!=null">
+	<div class="page-header"><h1>Blood Donor Profile</h1></div>
+
+	<div class="col-sm-3">
+		<div class="card col-sm-offset-1" style="width: 15rem;">
+			<img class="card-img-top" src="../assets/img/person.png" alt="Card image cap">
+
+			<div class="card-block">
+				<h4 class="card-title" align="center">{{profile.donorData.name.split(" ")[0]}}</h4>
+				<!-- word[0].toUpperCase() + word.substr(1) -->
+			</div>
+			
+		</div>
+	</div>
+	<div class="col-sm-9">
+
+
+        <div class="list-group">
+	                    
+			<div class="list-group-item">
+				<label>Blood Donor Id</label>
+				<input class="form-control" value="{{profile.donorData._id}}" type="text" name="name" id="name" readonly>
+			</div>
+			<div class="list-group-item ">
+				<label>Name</label>
+				<input class="form-control" value="{{profile.donorData.name}}" type="text" name="email" id="email" readonly>
+			</div>    
+			<div class="list-group-item ">
+				<label>Email</label>
+				<input class="form-control" value="{{profile.donorData.email}}" type="text" name="role" id="role" readonly>
+			</div>   
+			<div class="list-group-item ">
+				<label>Nic No.</label>
+				<input class="form-control" value="{{profile.donorData.nic_no}}" type="text" name="role" id="role" readonly>
+			</div>   
+			<div class="list-group-item ">
+				<label>Blood group</label>
+				<input class="form-control" value="{{profile.donorData.abo}}{{profile.donorData.rh}}" type="text" name="role" id="role" readonly>
+			</div>  
+			<div class="list-group-item ">
+				<label>age</label>
+				<input class="form-control" value="{{profile.donorData.age}}" type="text" name="role" id="role" readonly>
+			</div>  
+			<div class="list-group-item ">
+				<label>No of donations done</label>
+				<input class="form-control" value="{{profile.donorData.donation_count}}" type="text" name="role" id="role" readonly>
+			</div>  
+			
+			<div class="list-group-item ">
+				<label>Date of last donation</label>
+				<input class="form-control" value="{{profile.donorData.last_donated_date}}" type="text" name="role" id="role" readonly>
+			</div>  
+			<div class="list-group-item ">
+				<label>District</label>
+				<input class="form-control" value="{{profile.donorData.district}}" type="text" name="role" id="role" readonly>
+			</div>  
+			<div class="list-group-item ">
+				<label>Address</label>
+				<input class="form-control" value="{{profile.donorData.address}}" type="text" name="role" id="role" readonly>
+			</div> 
+			<div class="list-group-item ">
+				<label>Telephone No.</label>
+				<input class="form-control" value="{{profile.donorData.tele_no}}" type="text" name="role" id="role" readonly>
+			</div>   
+		</div>
+                    
+		
+	</div>
+	
+	
+</div>
+		
+

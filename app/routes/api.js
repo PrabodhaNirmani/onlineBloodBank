@@ -31,6 +31,7 @@ module.exports=function(router){
 		User.findOne({username:req.body.username}).select('username password email role active').exec(function(err,user){ 
 			
 			if(err) {
+
 			
 				// return handleError(err);
 			}
@@ -192,7 +193,7 @@ module.exports=function(router){
 					res.json({success: false,message:err})
 				}
 				else{
-					StaffMember.findOne({email:user.email}).select('temporyToken active').exec(function(err,staff){
+					StaffMember.findOne({email:user.email}).select('name temporyToken active').exec(function(err,staff){
 						if(err){
 
 						}
@@ -200,6 +201,8 @@ module.exports=function(router){
 							staff.temporyToken=null;
 							staff.active=true;
 							staff.save();
+							user.name=staff.name;
+							user.save();
 						}
 					});
 					var token=jwt.sign({username:user.username,role:user.role,email:user.email},secret,{ expiresIn: '1h' });
@@ -823,7 +826,7 @@ module.exports=function(router){
 	//route for search blood donor
 	router.post('/search-donor',function(req,res){
 
-		BloodDonor.findOne({email:req.body.email}).select('name email abo rh gender').exec(function(err,donor){ 
+		BloodDonor.findOne({email:req.body.email}).select('_id name email abo rh gender').exec(function(err,donor){ 
 			
 			if(err) {
 			
@@ -847,6 +850,36 @@ module.exports=function(router){
 
 
 	});
+
+	
+
+	router.get('/get-donor/:id',function(req,res){
+		BloodDonor.findOne({_id:req.params.id}).select().exec(function(err,donor){ 
+			
+			if(err) {
+			
+				// return handleError(err);
+			}
+			else{
+				if(!donor){
+				
+					res.json({success:false, message:"Blood donor is not found, Register first"});
+				} 
+				else if(donor){
+
+			  		
+						res.json({success:true,message:"Donor found",BloodDonor:donor});
+					
+				}
+			}
+			
+		
+		});
+
+
+	});
+
+
 
 
 	//donate blood
@@ -1000,6 +1033,58 @@ module.exports=function(router){
 		});
 	});
 
+
+	//releasing blood packets
+	router.post('/release-blood/:id',function(req,res){
+		var id=req.params.id;
+
+		BloodPacket.findOne({_id:id}).select().exec(function(err,blood){
+			if(err){
+				console.log("expried err");
+			}
+			else if(!blood){
+				console.log("blood list length 0");
+			}
+			else{
+			
+				blood.release_status=true;
+
+				blood.save(function(err){
+					if(err){
+						res.json({success:false, message:"Error occured"});
+					}
+					else{
+						res.json({success:true, message:"Blood packet released"});	
+					}
+				});
+				
+
+				
+			
+			}
+		});
+
+	});
+
+
+	//finding blood packets to release
+	router.put('/release-blood/:id',function(req,res){
+		var id=req.params.id;
+		BloodPacket.findOne({_id:id}).select().exec(function(err,blood){
+			if(err){
+				res.json({success:false});
+
+			}
+			else if(!blood){
+				res.json({success:false});
+			}
+			else{
+				res.json({success:true,blood:blood});
+			}
+		});
+	});
+
+	// route to get ditricts list in Sri Lanka
 	router.get('/get-districts',function(req,res){
 		District.find({valid:true}).select('district').exec(function(err,list){
 			if(err){

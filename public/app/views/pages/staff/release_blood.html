@@ -1,1 +1,90 @@
-<h1>release blood</h1>
+<!-- <div class="scrollable"> -->
+	<div class="container col-sm-10">
+		<div class="page-header"><h1>Release Blood</h1></div>
+		
+		<div class="row">
+			
+			<div class="container col-sm-8">
+			<!-- <div class="page-header">
+				<h3>New donation</h3>
+			</div> -->
+
+				<form name="regForm" ng-submit="release.releaseBlood(donorData,regForm.$valid);" novalidate>
+					<div class="row">
+						<!-- Name -->
+						<label>Blood Packet Id: </label>
+						<input type="text" name="id" id="id" class="form-control" ng-model="release.blood._id" readonly>		
+						
+						<br>
+
+					</div>
+					<div class="row">
+						<!-- Email -->
+						<label>Date of donation: </label>
+						<input type="text" name="donation-date" id="donation-date"  class="form-control" ng-model="release.blood.donated_date.split('T')[0]" readonly>		
+						
+						<br>
+
+					</div>
+					<div class="row">
+						<!-- Email -->
+						<label>Date of expiration: </label>
+						<input type="text" name="expiration-date" id="expiration-date" class="form-control" ng-model="release.blood.expiration_date.split('T')[0]" readonly>		
+						
+						<br>
+
+					</div>
+					<div class="row">
+						<div class="col-sm-2">
+						<!-- ABO -->
+							<label>ABO: </label>
+							<input type="text" name="abo" id="abo" placeholder="Enter abo" class="form-control" ng-model="release.blood.abo" readonly>		
+							
+						</div>
+						<div class="col-sm-2">
+							<!-- RH -->
+							<label>RH: </label>
+							<input type="text" name="rh" id="rh" placeholder="Enter rh" class="form-control" ng-model="release.blood.rh" readonly>		
+							
+						<br>
+
+						</div>
+				
+					</div>
+					
+					<br>
+			  		<button class="btn btn-danger" type="button" ng-click="release.releaseBlood()">Confirm Release</button>
+			  		<br>
+
+				</form>
+			</div>
+			
+
+		</div>
+
+
+		<div class="col-sm-6 col-sm-offset-3">
+		<br>
+			<div class="jumbotron text-center" ng-show="release.loading">
+				<span class="glyphicon glyphicon-repeat spinner"></span>
+				<p>Loading...</p>
+			</div>
+			<!-- success : search results -->
+			<div class="row show-hide-message text-center" ng-show="release.successMsg">
+				<div class="alert alert-success">{{release.successMsg}}</div>
+			</div>
+			
+			<!-- error -->
+			<div class="row show-hide-message text-center" ng-show="release.errorMsg">
+				<div class="alert alert-danger">{{release.errorMsg}}</div>
+			</div>
+		</div>
+	</div>
+<!-- </div> -->
+
+<style type="text/css">
+	.scrollable {
+	    height: 600px; /* or any value */
+	    overflow-y: auto;
+	}
+</style>

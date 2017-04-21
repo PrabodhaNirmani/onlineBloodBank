@@ -6,12 +6,12 @@
 		<br><br>
 		<div class="row">
 			<div class="col-sm-8 col-sm-offset-2" ng-class="{'has-success':(searchForm.email.$valid && !searchForm.email.$pristine),'has-error':(!searchForm.email.$valid && !searchForm.email.$pristine)||(searchForm.$submitted && !searchForm.email.$valid)}">
-			<form name="searchForm" ng-submit="registerDonation.searchDonor(searchData,searchForm.$valid)" novalidate>
+			<form name="searchForm" ng-submit="search.searchDonor(searchData,searchForm.$valid)" novalidate>
 				<label class="form">Email: </label>
 				<div class="input-group input-group-lg">
 					<!-- Email -->
 					
-					<input type="text" name="email" class="form-control" placeholder="Search for..." ng-model="registerDonation.searchData.email" ng-minlength="5" ng-maxlength="35" ng-pattern="/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/" required>
+					<input type="text" name="email" class="form-control" placeholder="Search for..." ng-model="search.searchData.email" ng-minlength="5" ng-maxlength="35" ng-pattern="/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/" required>
 					<span class="input-group-btn" >
 
 			        <button class="btn btn-danger" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
@@ -29,38 +29,44 @@
 		</div>
 		<div class="col-sm-6 col-sm-offset-3">
 			<br>
-			<div class="jumbotron text-center" ng-show="registerDonation.loading">
+			<div class="jumbotron text-center" ng-show="search.loading">
 
 				<span class="glyphicon glyphicon-repeat spinner"></span>
 				<p>Loading...</p>
 			</div>
 			
 			<!-- success : search results -->
-			<div class="row show-hide-message text-center" ng-show="registerDonation.searched &&(registerDonation.donorData.email==searchForm.email.$viewValue)">
+			<div class="row show-hide-message text-center" ng-show="search.searched">
 				<br>
-				<div class="card col-sm-offset-1" style="width: 20rem;">
-					<a href="/donor-profile" class="card-link"><img class="card-img-top" src="../assets/img/person.png" alt="Card image cap"></a>
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<strong>Blood Donor</strong>
+					</div>
+					<br>
+					<div class="card col-sm-offset-3" style="width: 20rem;">
+						<a href="/donor-profile" class="card-link"><img class="card-img-top" src="../assets/img/person.png" alt="Card image cap"></a>
 
-					<div class="card-block">
-						<h4 class="card-title">{{registerDonation.donorData.name}}</h4>
-						
+						<div class="card-block">
+							<h4 class="card-title">{{search.donorData.name}}</h4>
+							
+						</div>
+						<ul class="list-group list-group-flush">
+							<li class="list-group-item">{{search.donorData.gender.charAt(0).toUpperCase()+search.donorData.gender.substr(1)}}</li>
+							<li class="list-group-item">{{search.donorData.abo+" "+search.donorData.rh}}</li>
+					
+						</ul>
+						<div class="card-block">
+							<a href="/donor-profile" class="btn btn-primary">View profile</a>
+					
+						</div>
 					</div>
-					<ul class="list-group list-group-flush">
-						<li class="list-group-item">{{registerDonation.donorData.gender}}</li>
-						<li class="list-group-item">{{registerDonation.donorData.abo+" "+registerDonation.donorData.rh}}</li>
-				
-					</ul>
-					<div class="card-block">
-						<a href="/donor-profile" class="btn btn-danger">View profile</a>
-				
-					</div>
-				</div>
-				
+					<br>
+				</div>	
 			</div>
 			<br>
 			<!-- error -->
-			<div class="row show-hide-message text-center" ng-show="registerDonation.errorMsg">
-				<div class="alert alert-danger">{{registerDonation.errorMsg}}</div>
+			<div class="row show-hide-message text-center" ng-show="search.errorMsg">
+				<div class="alert alert-danger">{{search.errorMsg}}</div>
 			</div>
 		</div>
 	</div>

@@ -56,6 +56,7 @@ angular.module('userServies',[])
 	userFactory.changePassword=function(userData){
 		return $http.post('/api/change-password',userData)
 	}
+
 	
 
 	

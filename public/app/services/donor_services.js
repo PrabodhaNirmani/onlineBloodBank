@@ -1,6 +1,6 @@
 angular.module('donorServices',[])
 
-.factory('Donor',function($http){
+.factory('Donor',function($http,DonorStore){
 	donorFactory={};
 
 	bloodDonor=null;
@@ -23,27 +23,38 @@ angular.module('donorServices',[])
 		return $http.post('/api/check-donor-email',data);
 	}
 
-	donorFactory.setDonor=function(donor){
-		bloodDonor=donor;
-
-	}
-
-	donorFactory.getDonor=function(){
-		return bloodDonor;
-	}
-
-	donorFactory.getFlag=function(){
-		return search;
-	}
-
-	donorFactory.setFlag=function(flag){
-		search=flag;
-	}
-	
 
 	donorFactory.getDistricts=function(){
 		return $http.get('/api/get-districts');
 	}
 
+	donorFactory.getDonorDetails=function(){
+		return $http.get('/api/get-donor/'+DonorStore.getDonor());
+	}
+
 	return donorFactory;
+})
+
+
+
+.factory('DonorStore',function($window){
+	donorIDFactory={};
+
+	
+	donorIDFactory.setDonor=function(id){
+
+		if(id){
+			$window.localStorage.setItem('id',id);	
+			
+		}
+		else{
+			$window.localStorage.removeItem('id');
+		}
+		
+	}
+	
+	donorIDFactory.getDonor=function(){
+		return $window.localStorage.getItem('id');
+	}
+	return donorIDFactory;
 });

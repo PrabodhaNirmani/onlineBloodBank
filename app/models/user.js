@@ -33,7 +33,10 @@ var usernameValidator = [
 
 
 var UserSchema=new Schema({
-	email:{
+	name:{
+    type:String,required:true, default: null
+  },
+  email:{
     type:String, lowercase:true, required:true, unique:true, validate:emailValidator
   },
 	username:{

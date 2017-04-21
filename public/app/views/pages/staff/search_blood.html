@@ -72,22 +72,25 @@
                        
 			<thead>
 				<tr>
-					<th>Id</th>
-					<th>ABO</th>
-					<th>Rh</th>
-					<th>Date of donation</th>
-					<th>Date of expiration</th>
+					<th> Blood Packet Id</th>
+					<th> ABO</th>
+					<th> Rh</th>
+					<th> Date of donation</th>
+					<th> Date of expiration</th>
+					<th></th>
+					<!-- <th></th> -->
 				</tr>
 
 			</thead>
 			<tbody>
 				<tr ng-repeat="blood in search.bloodList | limitTo:search.limit">
-					<th>{{blood.blood_packet_id}}</th>
-					<th>{{blood.abo}}</th>
-					<th>{{blood.rh}}</th>
-					<th>{{blood.donated_date}}</th>
-					<th>{{blood.expiration_date}}</th>
-
+					<td>{{blood._id}}</td>
+					<td>{{blood.abo}}</td>
+					<td>{{blood.rh}}</td>
+					<td>{{blood.donated_date.toString().split('T')[0]}}</td>
+					<td>{{blood.expiration_date.toString().split('T')[0]}}</td>
+					<td><button type="button" class="btn btn-primary" ng-click="search.loadReleasePage(blood._id)">Release</button></td>
+					<!-- <td><button type="button" class="btn btn-primary" ng-click="">Expires</button></td> -->
 				</tr>
 			</tbody>					
 		</table>

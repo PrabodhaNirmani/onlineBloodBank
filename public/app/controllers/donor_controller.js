@@ -1,14 +1,14 @@
 angular.module('donorCtrl',['donorServices'])
 
-.controller('regDonation',function($location,$timeout,Donor){
+.controller('regDonation',function($location,$timeout,Donor,DonorStore){
 
 
 
 	var app=this;
-	// Donor.setFlag(false);
-	app.searching=Donor.getFlag();
+	
+	
 	app.today=new Date;
-	app.donorData=Donor.getDonor();
+	app.donorData=false;
 	app.districts=[];
 	
 
@@ -19,13 +19,10 @@ angular.module('donorCtrl',['donorServices'])
 		
 	});
 
-
-
-
 	this.registerDonor=function(regData,valid){
 		app.errorMsgReg=false;
 		app.loadingReg=true;
-		app.searching=false;
+		
 		if(valid){
 
 			Donor.createDonor(app.regData).then(function(msg){
@@ -38,14 +35,12 @@ angular.module('donorCtrl',['donorServices'])
 						app.successMsgReg=msg.data.message+'.... Loading...';
 						$timeout(function(){
 							app.regData="";
-							$location.path('/new-donation');
-							
-							Donor.setDonor(msg.data.BloodDonor);	
-							app.donorData=Donor.getDonor();
+							DonorStore.setDonor(msg.data.BloodDonor._id);
+						
+							$location.path('/new-donation');		
+
 							app.successMsgReg=false;
-							//app.searching=true;
-							Donor.setFlag(true);
-							app.searching=Donor.getFlag();
+					
 						
 						},1000);
 						
@@ -64,65 +59,34 @@ angular.module('donorCtrl',['donorServices'])
 		}
 	}
 
-	this.searchDonor=function(searchData,valid){
-		app.errorMsg=false;
-		app.loading=true;
-		app.searched=false;
-		if(valid){
-			Donor.search(app.searchData).then(function(msg){
-				if(msg.data.success){
-					$timeout(function() {
-						app.loading=false;
-						app.successMsg=msg.data.message+'.... Loading...';
-						app.searched=true;
-						Donor.setDonor(msg.data.BloodDonor);
-						app.donorData=Donor.getDonor();
-						
-					}, 1000);
-				}
-				else{
-					app.loading=false;
-					app.errorMsg=msg.data.message+'... Please wait...';
-					$timeout(function(){
-						app.searchData="";
-						$location.path('/register-donor');	
-						
-						app.successMsgReg=false;
-					},2000); 
-				}
-			}); 
-		}
-		else{
-			app.loading=false;
-			app.errorMsg="Please make sure the form is submitted properly"; 
-		}
-	}
+	
 
 	this.donationSearch=function(regData,valid){
 		app.errorMsg=false;
 		app.loading=true;
-		app.searching=false;
+		// app.searching=false;
 		app.successMsg=false;
 		if(valid){
 			Donor.search(app.regData).then(function(msg){
 				if(msg.data.success){
-					$timeout(function() {
-						
-						app.successMsg=msg.data.message;
-						
+					
+					$timeout(function(){
 						app.loading=false;
+						app.successMsg=msg.data.message;
+						DonorStore.setDonor(msg.data.BloodDonor._id);
+					
+						
 						$timeout(function(){
-							// app.regData="";
 							
-							Donor.setDonor(msg.data.BloodDonor);
-							app.donorData=Donor.getDonor();
 							$location.path('/new-donation');	
 							// app.searching=true;
-							Donor.setFlag(true);
-							app.searching=Donor.getFlag();
+							app.successMsg=false;
 						
-						},1000);
-					}, 1000);
+						
+						},2000); 
+						
+					},1000);
+				
 				}
 				else{
 					app.loading=false;
@@ -142,44 +106,7 @@ angular.module('donorCtrl',['donorServices'])
 
 	}
 	
-	this.donate=function(donorData,valid){
-		app.errorMsg=false;
-		app.loading=true;
-		app.searching=false;
-		app.successMsg=false;
-		if(valid){
-			Donor.update(app.donorData).then(function(msg){
-				if(msg.data.success){
-					$timeout(function() {
-						
-						app.successMsg=msg.data.message;
-						
-						app.loading=false;
-						$timeout(function(){
-							app.regData="";
-							Donor.setDonor();
-							app.donorData=Donor.getDonor();
-							$location.path('/');
-							Donor.setFlag(false);
-							app.searching=Donor.getFlag();	
-						},3000);
-					}, 1000);
-				}
-				else{
-					app.loading=false;
-					app.errorMsg=msg.data.message;
-					$timeout(function(){
-						app.successMsg=false;
-					},2000); 
-				}
-			}); 
-		}
-		else{
-			app.loading=false;
-			app.errorMsg="Please make sure the form is submitted properly"; 
-		}
-
-	}
+	
 
 	this.checkEmail=function(regData){
 		app.checkingEmail=true;
@@ -205,8 +132,143 @@ angular.module('donorCtrl',['donorServices'])
 
 		})
 
-
 	}
 
+})
+
+.controller('searchDonorCtrl',function($location,$timeout,Donor,DonorStore){
+
+	app=this;
+	app.donorData=null;
+	app.searchDonor=function(searchData,valid){
+		app.errorMsg=false;
+		app.loading=true;
+		app.searched=false;
+		if(valid){
+			Donor.search(app.searchData).then(function(msg){
+				if(msg.data.success){
+					$timeout(function() {
+						app.loading=false;
+						app.successMsg=msg.data.message+'.... Loading...';
+						app.donorData=msg.data.BloodDonor;
+						DonorStore.setDonor(app.donorData._id);
+						app.searched=true;
+						
+						
+					}, 1000);
+				}
+				else{
+					app.loading=false;
+					app.errorMsg=msg.data.message+'... Please wait...';
+					$timeout(function(){
+						app.searchData="";
+						$location.path('/register-donor');	
+						
+						app.successMsgReg=false;
+					},2000); 
+				}
+			}); 
+		}
+		else{
+			app.loading=false;
+			app.errorMsg="Please make sure the form is submitted properly"; 
+		}
+	}
+
+
+})
+
+.controller('donationCtrl',function($location,$timeout,Donor,DonorStore){
+
+	app=this;
+
+	Donor.getDonorDetails().then(function(msg){
+		
+		if(msg.data.success){
+			app.donorData=msg.data.BloodDonor;
+					
+		}
+		else{
+			app.donorData=null;
+		}
+	});
+
+	
+
+	app.donate=function(donorData,valid){
+		app.errorMsg=false;
+		app.loading=true;
+		
+		app.successMsg=false;
+		if(valid){
+			Donor.update(app.donorData).then(function(msg){
+				if(msg.data.success){
+					$timeout(function() {
+						
+						app.successMsg=msg.data.message;
+						
+						app.loading=false;
+						$timeout(function(){
+							app.regData="";
+							DonorStore.setDonor();
+							$location.path('/about');
+							
+						},3000);
+					}, 1000);
+				}
+				else{
+					app.loading=false;
+					app.errorMsg=msg.data.message;
+					$timeout(function(){
+						app.successMsg=false;
+					},2000); 
+				}
+			}); 
+		}
+		else{
+			app.loading=false;
+			app.errorMsg="Please make sure the form is submitted properly"; 
+		}
+
+	}
+	
+})
+
+.controller('profileCtrl',function($location,$timeout,Donor,DonorStore){
+
+	app=this;
+
+	Donor.getDonorDetails().then(function(msg){
+		
+		if(msg.data.success){
+			app.donorData=msg.data.BloodDonor;
+					
+		}
+		else{
+			app.donorData=null;
+		}
+	});
+
+	
+	
+
+	app.edit=function(donorData,valid){
+		app.errorMsg=false;
+		app.loading=true;
+		
+		app.successMsg=false;
+		if(valid){
+			
+		}
+		else{
+			app.loading=false;
+			app.errorMsg="Please make sure the form is submitted properly"; 
+		}
+
+	}
+	
 });
+
+
+
 
