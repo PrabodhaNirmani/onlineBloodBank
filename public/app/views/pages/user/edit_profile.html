@@ -18,10 +18,10 @@
 <form name="userProfile.nameForm" ng-show="userProfile.phase1" ng-submit="userProfile.editName(newName,userProfile.nameForm.$valid);" novalidate >
 	<div class="col-sm-6">
 	<!-- name tab -->
-		<div ng-class="{'has-success':(userProfile.nameForm.name.$valid && !userProfile.nameForm.name.$pristine),'has-error':(!userProfile.nameForm.name.$valid && !userProfile.nameForm.name.$pristine)||(userProfile.nameForm.$submitted && !userProfile.nameForm.name.$valid)}">
+		<div ng-class="{'has-success':(userProfile.nameForm.name.$valid && !userProfile.nameForm.name.$pristine),'has-error':(!userProfile.nameForm.name.$valid && !userProfile.nameForm.name.$pristine)||(userProfile.nameForm.$submitted && !userProfile.nameForm.name.$valid)}" >
 			<!--  Name -->
 			<label>Name: </label>
-			<input type="text" name="name" id="name" placeholder="Enter name" class="form-control" ng-model="newName" ng-pattern="/^(([a-zA-Z]{3,20})+[ ]+([a-zA-Z]{3,30})+)+$/" ng-minlength="3" ng-maxlength="30" required>
+			<input type="text" name="name" id="name" placeholder="Enter name" class="form-control" ng-model="newName" ng-pattern="/^(([a-zA-Z]{3,20})+[ ]+([a-zA-Z]{3,30})+)+$/" ng-minlength="3" ng-maxlength="30" required ng-disabled="userProfile.successMsg">
 			<p class="help-block" ng-show="(!userProfile.nameForm.name.$pristine && userProfile.nameForm.name.$error.required)||(userProfile.nameForm.$submitted && userProfile.nameForm.name.$error.required)">*Required</p>
 			<ul class="help-block" ng-show="(!userProfile.nameForm.name.$pristine && userProfile.nameForm.name.$error.pattern) || (!userProfile.nameForm.name.$pristine && userProfile.nameForm.name.$error.minlength) || (!userProfile.nameForm.name.$pristine && userProfile.nameForm.name.$error.maxlength)">
 				<li>Must have space between first name and last name</li>
@@ -32,7 +32,7 @@
 			<br>
 		
 		</div>
-		<button class="btn btn-danger" type="submit">Save Changes</button>
+		<button class="btn btn-danger" type="submit" ng-disabled="userProfile.successMsg">Save Changes</button>
 		<div class="col-sm-10 col-sm-offset-1">		
 			
 			<br>
@@ -52,13 +52,13 @@
 	</div>	
 </form>
 
-<form name="userProfile.emailForm" ng-show="userProfile.phase2" ng-submit="userProfile.editEmail(newEmail,userProfile.emailForm.$valid);" novalidate >
-	`<div class="col-sm-6">	
+<form name="userProfile.emailForm" ng-show="userProfile.phase2" ng-submit="userProfile.editEmail(newEmail,userProfile.emailForm.$valid);" novalidate ng-disabled="userProfile.successMsg">
+	<div class="col-sm-6">	
 		<!-- email tab -->
-		<div ng-class="{'has-success':(userProfile.emailForm.email.$valid && !userProfile.emailForm.email.$pristine && !userProfile.emailInvalid),'has-error':(!userProfile.emailForm.email.$valid && !userProfile.emailForm.email.$pristine)||(userProfile.emailForm.$submitted && !userProfile.emailForm.email.$valid)||(userProfile.emailInvalid)}">
+		<div ng-class="{'has-success':(userProfile.emailForm.email.$valid && !userProfile.emailForm.email.$pristine && !userProfile.emailInvalid),'has-error':(!userProfile.emailForm.email.$valid && !userProfile.emailForm.email.$pristine)||(userProfile.emailForm.$submitted && !userProfile.emailForm.email.$valid)||(userProfile.emailInvalid)}" >
 			<!-- Email -->
 			<label>Email: </label>
-			<input type="text" name="email" id="email" placeholder="Enter your email address" class="form-control" ng-model="newEmail" ng-minlength="5" ng-maxlength="35" ng-pattern="/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/" ng-blur="userProfile.checkEmail(newEmail)" required>
+			<input type="text" name="email" id="email" placeholder="Enter your email address" class="form-control" ng-model="newEmail" ng-minlength="5" ng-maxlength="35" ng-pattern="/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/" ng-blur="userProfile.checkEmail(newEmail)" required ng-disabled="userProfile.successMsg">
 
 			<p class="help-block" ng-show="(!userProfile.emailForm.email.$pristine && userProfile.emailForm.email.$error.required)||(userProfile.emailForm.$submitted && userProfile.emailForm.email.$error.required)">*Required</p>
 			<p class="help-block" ng-show="userProfile.emailForm.email.$valid && userProfile.emailMsg && !userProfile.emailForm.email.$error.required">{{userProfile.emailMsg }}</p>
@@ -70,7 +70,7 @@
 			</ul>
 			<br>
 		</div>
-		<button class="btn btn-danger" type="submit" ng-disabled="userProfile.emailInvalid">Save Changes</button>
+		<button class="btn btn-danger" type="submit" ng-disabled="userProfile.emailInvalid ||userProfile.successMsg">Save Changes</button>
 
 		
 		<div class="col-sm-10 col-sm-offset-1">	

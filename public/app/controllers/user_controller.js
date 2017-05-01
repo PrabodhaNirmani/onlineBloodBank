@@ -133,10 +133,10 @@ angular.module('userCtrl',['userServies'])
 })
 
 
-.controller('userProfileCtrl',function(User,$location,Auth,$routeParams,$scope){
+.controller('userProfileCtrl',function(User,$location,Auth,$routeParams,$scope,$timeout){
 	var app=this;
 	$scope.nameTab='active';
-	// app.nameTab='active'
+	
 	app.phase1=true;
 	app.loading=false;
 	app.successMsg=false;
@@ -162,10 +162,7 @@ angular.module('userCtrl',['userServies'])
 
 	app.namePhase=function(){
 		$scope.nameTab='active'
-		$scope.emailTab='default'
-		// app.nameTab='active'
-		// app.emailTab='default'
-		
+		$scope.emailTab='default'	
 		app.phase1=true;
 		app.phase2=false;
 		app.successMsg=false;
@@ -175,8 +172,6 @@ angular.module('userCtrl',['userServies'])
 	app.emailPhase=function(){
 		$scope.nameTab='default'
 		$scope.emailTab='active'
-		// app.nameTab='default'
-		// app.emailTab='active'
 		app.phase1=false;
 		app.phase2=true;
 		app.successMsg=false;
@@ -191,10 +186,12 @@ angular.module('userCtrl',['userServies'])
 			User.editUser(app.userObject).then(function(msg){
 				if(msg.data.success){
 					app.successMsg=msg.data.message;
-					console.log(app.successMsg)
-
 					app.loading=false;
 					app.errorMsg=false;
+					$timeout(function(){
+						
+						$location.path('/profile/'+$routeParams.username);	
+					},1000);
 				}
 				else{
 					app.errorMsg=msg.data.message;
@@ -217,10 +214,15 @@ angular.module('userCtrl',['userServies'])
 			User.editUser(app.userObject).then(function(msg){
 				if(msg.data.success){
 					app.successMsg=msg.data.message;
-					console.log(app.successMsg)
-
+					
+					
+					
 					app.loading=false;
 					app.errorMsg=false;
+					$timeout(function(){
+						
+						$location.path('/profile/'+$routeParams.username);	
+					},1000);
 				}
 				else{
 					app.errorMsg=msg.data.message;
