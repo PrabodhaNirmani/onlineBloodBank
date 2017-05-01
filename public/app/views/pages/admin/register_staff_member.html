@@ -24,6 +24,7 @@
 				<label>Email: </label>
 				<input type="text" name="email" id="email" placeholder="Enter email address" class="form-control" ng-model="registerUser.data.email" ng-minlength="5" ng-maxlength="35" ng-pattern="/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/" ng-blur="registerUser.checkEmail(data)" required>
 				<p class="help-block" ng-show="(!regForm.email.$pristine && regForm.email.$error.required)||(regForm.$submitted && regForm.email.$error.required)">*Required</p>
+				<p class="help-block" ng-show="userProfile.wait">Please wait ....</p>
 				<p class="help-block" ng-show="regForm.email.$valid && registerUser.emailMsg && !regForm.email.$error.required">{{registerUser.emailMsg }}</p>
 				<ul class="help-block" ng-show="(!regForm.email.$pristine && regForm.email.$error.pattern) || (!regForm.email.$pristine && regForm.email.$error.minlength) || (!regForm.email.$pristine && regForm.email.$error.maxlength)">
 					<li>Must contain @ sign</li>
@@ -50,7 +51,7 @@
 			
 			
 
-			<button class="btn btn-danger" type="submit">Submit</button>
+			<button class="btn btn-danger" ng-disabled="registerUser.emailInvalid" type="submit">Submit</button>
 				
 
 

@@ -75,6 +75,7 @@ module.exports=function(router){
 			}
 			else{
 				if(!user){
+					// console.log(req.body.email)
 					emailExistence.check(req.body.email, function(err,response){
 						if(response){
 							res.json({success:true, message:"Valid e-mail"});
@@ -1097,6 +1098,45 @@ module.exports=function(router){
 			}
 			else{
 				res.json({success:true,User:user})
+			}
+		});
+	});
+
+	router.put('/edit',function(req,res){
+		console.log(req.decoded.username)
+		
+		if(req.body.name) var newName=req.body.name;
+		if(req.body.email) var newEmail=req.body.email;
+		User.findOne({username:req.decoded.username},function(err,user){
+			if(err){
+				throw err;
+			}
+			else if(!user){
+				res.json({success:false,message:"no User provided"})
+			}
+			else{
+				if(newName){
+					user.name=newName;
+					user.save(function(err){
+						if(err){
+							throw err;
+						}
+						else{
+							res.json({success:true,message:"Name has been updated successfully"});
+						}
+					})
+				}
+				else if(newEmail){
+					user.email=newEmail;
+					user.save(function(err){
+						if(err){
+							throw err;
+						}
+						else{
+							res.json({success:true,message:"Email has been updated successfully"});
+						}
+					})
+				}
 			}
 		});
 	});

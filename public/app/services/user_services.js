@@ -61,6 +61,11 @@ angular.module('userServies',[])
 		return $http.get('/api/get-user-details/'+username);
 
 	}
+
+	userFactory.editUser=function(data){
+		return $http.put('/api/edit',data);
+	}
+
 	
 
 	

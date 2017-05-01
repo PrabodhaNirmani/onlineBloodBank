@@ -88,6 +88,7 @@
 						<input type="text" name="email" id="email" placeholder="Enter email" class="form-control" ng-model="registerDonation.regData.email" ng-minlength="5" ng-maxlength="35" ng-pattern="/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/" ng-blur="registerDonation.checkEmail(regData)" required>
 						<p class="help-block" ng-show="(!regForm.email.$pristine && regForm.email.$error.required)||(regForm.$submitted && regForm.email.$error.required)">*Required</p>
 						<p class="help-block" ng-show="regForm.email.$valid && registerDonation.emailMsg && !regForm.email.$error.required">{{registerDonation.emailMsg }}</p>
+						<p class="help-block" ng-show="registerDonation.wait">Please wait ....</p>
 						<ul class="help-block" ng-show="(!regForm.email.$pristine && regForm.email.$error.pattern) || (!regForm.email.$pristine && regForm.email.$error.minlength) || (!regForm.email.$pristine && regForm.email.$error.maxlength)">
 							<li>Must contain @ sign</li>
 							<li>Must not contain any special charactors</li>
@@ -193,7 +194,7 @@
 					</div>
 					<br><br>
 
-			  		<button class="btn btn-danger" type="submit">Submit</button>
+			  		<button class="btn btn-danger" ng-disabled="registerDonation.emailInvalid"  type="submit">Submit</button>
 				
 				</form>
 				<!-- <div class="col-sm-offset-1 col-sm-10"> -->

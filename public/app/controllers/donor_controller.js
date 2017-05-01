@@ -111,7 +111,8 @@ angular.module('donorCtrl',['donorServices'])
 	this.checkEmail=function(regData){
 		app.checkingEmail=true;
 		app.emailMsg=false;
-		app.emailInvalid=false;
+		app.emailInvalid=true;
+		app.wait=true;
 
 		Donor.checkEmail(app.regData).then(function(response){
 			
@@ -120,6 +121,7 @@ angular.module('donorCtrl',['donorServices'])
 				app.checkingEmail=false;
 				app.emailMsg=response.data.message;
 				app.emailInvalid=false;
+				app.wait=false;
 
 			}
 			else{
@@ -127,6 +129,7 @@ angular.module('donorCtrl',['donorServices'])
 				app.checkingEmail=false;
 				app.emailMsg=response.data.message;
 				app.emailInvalid=true;
+				app.wait=false;
 
 			}
 

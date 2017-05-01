@@ -5,8 +5,89 @@
 
 </div>
 <br>
-<ul class="nav nav-tabs">
-    <li role="presentation" ng-click="userProfile.namePhase();" ng-class="nameTab"><a href="#">Name</a></li>
-    <li role="presentation"><a href="userProfile.emailPhase();" ng-class="emailTab">Email</a></li>
+<ul class="nav nav-tabs" role="tablist">
+    <li ng-click="userProfile.namePhase();" ng-class="userProfile.nameTab">
+    	<a data-toggle="tab" href="#">Name</a>
+    </li>
+    <li ng-click="userProfile.emailPhase();" ng-class="userProfile.emailTab">
+    	<a data-toggle="tab" href="#">Email</a>
+    </li>
+  
 </ul>
 <br><br>
+<form name="userProfile.nameForm" ng-show="userProfile.phase1" ng-submit="userProfile.editName(newName,userProfile.nameForm.$valid);" novalidate >
+	<div class="col-sm-6">
+	<!-- name tab -->
+		<div ng-class="{'has-success':(userProfile.nameForm.name.$valid && !userProfile.nameForm.name.$pristine),'has-error':(!userProfile.nameForm.name.$valid && !userProfile.nameForm.name.$pristine)||(userProfile.nameForm.$submitted && !userProfile.nameForm.name.$valid)}">
+			<!--  Name -->
+			<label>Name: </label>
+			<input type="text" name="name" id="name" placeholder="Enter name" class="form-control" ng-model="newName" ng-pattern="/^(([a-zA-Z]{3,20})+[ ]+([a-zA-Z]{3,30})+)+$/" ng-minlength="3" ng-maxlength="30" required>
+			<p class="help-block" ng-show="(!userProfile.nameForm.name.$pristine && userProfile.nameForm.name.$error.required)||(userProfile.nameForm.$submitted && userProfile.nameForm.name.$error.required)">*Required</p>
+			<ul class="help-block" ng-show="(!userProfile.nameForm.name.$pristine && userProfile.nameForm.name.$error.pattern) || (!userProfile.nameForm.name.$pristine && userProfile.nameForm.name.$error.minlength) || (!userProfile.nameForm.name.$pristine && userProfile.nameForm.name.$error.maxlength)">
+				<li>Must have space between first name and last name</li>
+				<li>Must not contain any special charactors</li>
+				<li>Must not contain any number</li>
+				<li>Must be at least 3 charactors but no more than 30</li>				
+			</ul>
+			<br>
+		
+		</div>
+		<button class="btn btn-danger" type="submit">Save Changes</button>
+		<div class="col-sm-10 col-sm-offset-1">		
+			
+			<br>
+			<div class="jumbotron text-center" ng-show="userProfile.loading">
+				<span class="glyphicon glyphicon-repeat spinner"></span>
+				<p>Loading...</p>
+			</div>
+			
+			<div class="row show-hide-message" ng-show="userProfile.successMsg">
+				<div class="alert alert-success">{{userProfile.successMsg}}</div>
+			</div>
+			
+			<div class="row show-hide-message" ng-show="userProfile.errorMsg">
+				<div class="alert alert-danger">{{userProfile.errorMsg}}</div>
+			</div>
+		</div>
+	</div>	
+</form>
+
+<form name="userProfile.emailForm" ng-show="userProfile.phase2" ng-submit="userProfile.editEmail(newEmail,userProfile.emailForm.$valid);" novalidate >
+	`<div class="col-sm-6">	
+		<!-- email tab -->
+		<div ng-class="{'has-success':(userProfile.emailForm.email.$valid && !userProfile.emailForm.email.$pristine && !userProfile.emailInvalid),'has-error':(!userProfile.emailForm.email.$valid && !userProfile.emailForm.email.$pristine)||(userProfile.emailForm.$submitted && !userProfile.emailForm.email.$valid)||(userProfile.emailInvalid)}">
+			<!-- Email -->
+			<label>Email: </label>
+			<input type="text" name="email" id="email" placeholder="Enter your email address" class="form-control" ng-model="newEmail" ng-minlength="5" ng-maxlength="35" ng-pattern="/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/" ng-blur="userProfile.checkEmail(newEmail)" required>
+
+			<p class="help-block" ng-show="(!userProfile.emailForm.email.$pristine && userProfile.emailForm.email.$error.required)||(userProfile.emailForm.$submitted && userProfile.emailForm.email.$error.required)">*Required</p>
+			<p class="help-block" ng-show="userProfile.emailForm.email.$valid && userProfile.emailMsg && !userProfile.emailForm.email.$error.required">{{userProfile.emailMsg }}</p>
+			<p class="help-block" ng-show="userProfile.wait">Please wait ....</p>
+			<ul class="help-block" ng-show="(!userProfile.emailForm.email.$pristine && userProfile.emailForm.email.$error.pattern) || (!userProfile.emailForm.email.$pristine && userProfile.emailForm.email.$error.minlength) || (!userProfile.emailForm.email.$pristine && userProfile.emailForm.email.$error.maxlength)">
+				<li>Must contain @ sign</li>
+				<li>Must not contain any special charactors</li>
+				<li>Must be at least 5 charactors but no more than 35</li>				
+			</ul>
+			<br>
+		</div>
+		<button class="btn btn-danger" type="submit" ng-disabled="userProfile.emailInvalid">Save Changes</button>
+
+		
+		<div class="col-sm-10 col-sm-offset-1">	
+		<br>	
+			<div class="jumbotron text-center" ng-show="userProfile.loading">
+				<span class="glyphicon glyphicon-repeat spinner"></span>
+				<p>Loading...</p>
+			</div>
+			
+			<div class="row show-hide-message" ng-show="userProfile.successMsg">
+				<div class="alert alert-success">{{userProfile.successMsg}}</div>
+			</div>
+			
+			<div class="row show-hide-message" ng-show="userProfile.errorMsg">
+				<div class="alert alert-danger">{{userProfile.errorMsg}}</div>
+			</div>
+		</div>
+	</div>
+</form>
+<br><br><br>
