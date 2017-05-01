@@ -17,7 +17,7 @@ module.exports=function(router){
 	//my account details of sendgrid
 	var options = {
 	  auth: {
-	    api_user: 'prabodha',
+	    api_user: 'nirmani',
 	    api_key: 'prabodha@1994'
 	  }
 	}
@@ -256,7 +256,7 @@ module.exports=function(router){
 								else{
 									//email object for the requesting email
 									var email = {
-									  from: 'Localhost staff,bloodbank@localhost.com',
+									  from: 'onlinebloodbanksrilanka@gmail.com',
 									  to: staff.email,
 									  subject: 'Activation link request',
 									  text: 'Hello '+staff.name+'. You have recently request for activation link for your account of ONLINE BLOOD BANK for staff member access. You can activate your account using this link : https://onlinebloodbank.herokuapp.com/activate. Thank You!!!',
@@ -318,7 +318,7 @@ module.exports=function(router){
 			else{
 				//email object
 				var email = {
-				  from: 'Localhost staff,bloodbank@localhost.com',
+				  from: 'onlinebloodbanksrilanka@gmail.com',
 				  to: user.email,
 				  subject: 'Username request',
 				  text: 'Hello... You have recently request for username of your account. Username : ' +user.username+'Thank You!!!',
@@ -364,7 +364,7 @@ module.exports=function(router){
 						else{
 							//email object
 							var email = {
-							  from: 'Localhost staff,bloodbank@localhost.com',
+							  from: 'onlinebloodbanksrilanka@gmail.com',
 							  to: user.email,
 							  subject: 'Password reset request',
 							  text: 'Hello... You have recently request for reset password of your account. You can use this link to reset your password : https://onlinebloodbank.herokuapp.com/reset-password<br>',
@@ -599,7 +599,7 @@ module.exports=function(router){
 								else{
 							
 									var email = {
-									  from: 'Localhost staff,bloodbank@localhost.com',
+									  from: 'onlinebloodbanksrilanka@gmail.com',
 									  to: staff.email,
 									  subject: 'Loging details to the ONLINE BLOOD BANK',
 									  text: 'Hello '+staff.name+'. Your account of ONLINE BLOOD BANK for staff member access was created. You can activate your account using this link : https://onlinebloodbank.herokuapp.com/activate. Thank You!!!',
@@ -790,7 +790,7 @@ module.exports=function(router){
 							// }
 							// var password=randomString(10);
 							// var email = {
-							// 	from: 'Localhost staff,bloodbank@localhost.com',
+							// 	from: 'onlinebloodbanksrilanka@gmail.com',
 							// 	to: donor.email,
 							// 	subject: 'Loging details to the BLOOD DONOR APP',
 							// 	text: 'Hello '+donor.name+'. Your account of BLOOD DONOR APP was created. This e-mail contains login details to the system. Username :'+donor.username+'Password : '+password+'',
