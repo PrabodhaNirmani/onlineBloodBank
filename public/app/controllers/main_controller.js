@@ -164,6 +164,8 @@ angular.module('mainController',['authServices','userServies','bloodServices'])
 						app.loading=false;
 						app.successMsg=msg.data.message+'.... Redirecting...';
 						$timeout(function(){
+							//expires blood
+							Blood.expireBlood();
 							$location.path('/about');	
 							app.loginData=null;
 							app.successMsg=false;
@@ -238,6 +240,8 @@ angular.module('mainController',['authServices','userServies','bloodServices'])
 	//logout option
 	app.logout=function(){
 		app.showModal(2);
+		//expires blood
+		Blood.expireBlood();
 		
 	}
 

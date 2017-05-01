@@ -1,0 +1,89 @@
+<div class="page-header">
+	<h1>Blood Releases</h1>
+</div>
+
+<div ng-show="showRelease.bloodList.length>0">
+		
+	<div class="showmore">
+		<div class="col-lg-6">
+			<div class="input-group">
+				<span class="input-group-addon">Results to display</span>
+				<input type="text" min="1" class="form-control" ng-model="showRelease.number">
+			</div>
+		</div>
+		<div class="row">
+			<button type="button" class="btn btn-primary" ng-click="showRelease.showMore(number)">Apply Filter</button>	
+
+			<button type="button" class="btn btn-primary" ng-click="showRelease.showAll()">Show All</button>	
+		</div>
+		
+	</div>
+</div>
+<br><br>
+<div class="panel panel-red" ng-show="showRelease.bloodList.length>0">
+	<div class="panel-heading">
+		<strong>Blood Packets</strong>
+	</div>
+
+
+	<table class="table table-bordered table-hover table-striped">
+                   
+		<thead>
+			<tr>
+				<!-- <th></th> -->
+				<th> Blood Packet Id</th>
+				<th> ABO</th>
+				<th> Rh</th>
+				<th> Date of donation</th>
+				<th> Date of release</th>
+				<!-- <th></th> -->
+				<!-- <th></th> -->
+			</tr>
+
+		</thead>
+		<tbody>
+			<tr ng-repeat="blood in showRelease.bloodList | limitTo:showRelease.limit">
+				
+				<!-- <td>{{showRelease.bloodList.indexof(blood)+1}}</td> -->
+				<td>{{blood._id}}</td>
+				<td>{{blood.abo}}</td>
+				<td>{{blood.rh}}</td>
+				<td>{{blood.donated_date.toString().split('T')[0]}}</td>
+				<td>{{blood.release_date.toString().split('T')[0]}}</td>
+				<!-- <td><button type="button" class="btn btn-primary" ng-click="showRelease.loadReleasePage(blood._id)">Release</button></td> -->
+				<!-- <td><button type="button" class="btn btn-primary" ng-click="">Expires</button></td> -->
+			</tr>
+		</tbody>					
+	</table>
+	
+</div>
+<div class="row">
+	<div class="col-sm-6 col-sm-offset-2">
+		<div class="row show-hide-message text-center" ng-show="showRelease.showMoreError">
+			<div class="alert alert-danger">{{showRelease.showMoreError}}</div>
+		
+	
+		</div>
+
+	</div>	
+</div>
+
+<br>
+<div ng-show="showRelease.bloodList.length>0">
+	
+	<div class="showmore">
+		<div class="col-lg-6">
+			<div class="input-group">
+				<span class="input-group-addon">Results to display</span>
+				<input type="text" min="1" class="form-control" ng-model="showRelease.number">
+			</div>
+		</div>
+		<div class="row">
+			<button type="button" class="btn btn-primary" ng-click="showRelease.showMore(number)">Apply Filter</button>	
+
+			<button type="button" class="btn btn-primary" ng-click="showRelease.showAll()">Show All</button>	
+		</div>
+		
+	</div>
+	<br><br>
+</div>

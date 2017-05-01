@@ -14,9 +14,21 @@ angular.module('bloodServices',[])
 	}
 
 	bloodFactory.releaseBloodRequest=function(){
-		return $http.put('/api/release-blood/'+BloodID.getId())
+		return $http.put('/api/release-blood/'+BloodID.getId());
 	}
+
+
+	bloodFactory.expireBlood=function(){
+		return $http.put('/api/expire-blood');
+	}
+
+	bloodFactory.getExpiredBlood=function(){
+		return $http.get('api/get-blood-expirations');
+	}	
 	
+	bloodFactory.getReleasedBlood=function(){
+		return $http.get('api/get-blood-releases');
+	}	
 	
 
 	return bloodFactory;

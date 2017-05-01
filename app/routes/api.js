@@ -1027,8 +1027,32 @@ module.exports=function(router){
 					res.json({success:false, message:"No blood packets found"});
 				} 
 				else if(bloodList.length>0){
+					for(var i=0;i<bloodList.length;i++){
+						if(bloodList[i].expiration_date<new Date()){
+							var blood=bloodList[i];
+							blood.expire_status=true;
+							blood.save();
+
+						}
+						
+					}
+					BloodPacket.find({abo:abo,rh:rh,release_status:false,expire_status:false}).select('blood_packet_id abo rh donated_date expiration_date').exec(function(error,newBloodList){ 
+			
+						if(error) {
+							console.log("error")
+						}
+						else{
+							if(newBloodList.length==0){
+						
+								res.json({success:false, message:"No blood packets found"});
+							} 
+							else if(newBloodList.length>0){
+								
+								res.json({success:true,message:"Blood is available",BloodPacket:newBloodList});
+							}
+						}
+					});
 					
-					res.json({success:true,message:"Donor found",BloodPacket:bloodList});
 				}
 			}
 		});
@@ -1049,7 +1073,7 @@ module.exports=function(router){
 			else{
 			
 				blood.release_status=true;
-
+				blood.release_date=new Date();
 				blood.save(function(err){
 					if(err){
 						res.json({success:false, message:"Error occured"});
@@ -1081,6 +1105,30 @@ module.exports=function(router){
 			}
 			else{
 				res.json({success:true,blood:blood});
+			}
+		});
+	});
+
+	router.get('/get-blood-expirations',function(req,res){
+		BloodPacket.find({expire_status:true}).select().exec(function(err,bloodList){
+			if(err) throw err;
+			if(bloodList.length==0){
+				res.json({sucess:false,message:"No blood packets"})
+			}
+			else{
+				res.json({success:true,message:"Blood packets have been expired",blood:bloodList})
+			}
+		});
+	});
+
+	router.get('/get-blood-releases',function(req,res){
+		BloodPacket.find({release_status:true}).select().exec(function(err,bloodList){
+			if(err) throw err;
+			if(bloodList.length==0){
+				res.json({sucess:false,message:"No blood packets"})
+			}
+			else{
+				res.json({success:true,message:"Blood packets have been released",blood:bloodList})
 			}
 		});
 	});
@@ -1155,6 +1203,32 @@ module.exports=function(router){
 
 	});	
 
+	//route to expires blood from the system
+	router.put('/expire-blood',function(req,res){
+		
+		BloodPacket.find({expire_status:false,release_status:false}).select().exec(function(err,bloodList){
+			
+			if(err) throw err;
+
+			if(!bloodList){
+				console.log('het')
+			}
+			else{
+				for(var i=0;i<bloodList.length;i++){
+					if(bloodList[i].expiration_date<new Date()){
+						var blood=bloodList[i];
+						blood.expire_status=true;
+						blood.save();
+
+					}
+					
+				}	
+			}
+
+			
+		});
+	});
+	
 
 	//route to root
 	router.get('/',function(req,res){

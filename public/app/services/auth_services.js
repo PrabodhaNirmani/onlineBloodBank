@@ -1,12 +1,13 @@
-angular.module('authServices',[])
+angular.module('authServices',['bloodServices'])
 
 
-.factory('Auth',function($http,AuthToken){
+.factory('Auth',function($http,AuthToken,Blood){
 	authFactory={};
 
 	authFactory.login=function(loginData){
+		
 		return $http.post('/api/authenticate',loginData).then(function(data){
-
+			
 			AuthToken.setToken(data.data.token);
 			return data
 		});
@@ -44,6 +45,7 @@ angular.module('authServices',[])
 
 	// Auth.logout()
 	authFactory.logout=function(){
+
 		//removing the token
 		AuthToken.setToken();
 

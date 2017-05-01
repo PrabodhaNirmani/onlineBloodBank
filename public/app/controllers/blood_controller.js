@@ -3,7 +3,7 @@ angular.module('bloodCtrl',['bloodServices'])
 .controller('searchCtrl',function($location,$timeout,Blood,BloodID){
 
 	var app=this;
-	app.limit=1;
+	app.limit=10;
 	app.number=null;
 
 	app.searchBlood=function(searchData,valid){
@@ -134,8 +134,99 @@ angular.module('bloodCtrl',['bloodServices'])
 
 	}
 
-
 	
+})
+
+.controller('showReleaseCtrl',function(Blood){
+	var app=this;
+	app.errorMsg=false;
+	app.successMsg=false;
+	app.bloodList=false;
+	app.limit=20;
+	app.number=null;
+	app.showMoreError=false;
+
+	Blood.getReleasedBlood().then(function(data){
+		if(data.data.success){
+			app.successMsg=data.data.message;
+			app.bloodList=data.data.blood;
+
+
+		}
+		else{
+			app.errorMsg=data.data.message;
+
+		}
+	});
+
+	app.showMore=function(number){
+		app.showMoreError=false;
+		if(app.number>0){
+			app.limit=app.number;
+
+		}
+		else{
+			
+			app.showMoreError="Please enter a valid number"
+		}
+
+	}
+
+
+	app.showAll=function(){
+		app.number=null
+		app.showMoreError=false;
+		app.limit=undefined;
+
+	}
+
+})
+
+.controller('showExpireCtrl',function(Blood){
+	var app=this;
+	app.errorMsg=false;
+	app.successMsg=false;
+	app.bloodList=false;
+	app.limit=20;
+	app.number=null;
+	app.showMoreError=false;
+
+	Blood.getExpiredBlood().then(function(data){
+		if(data.data.success){
+			app.successMsg=data.data.message;
+			app.bloodList=data.data.blood;
+
+
+		}
+		else{
+			app.errorMsg=data.data.message;
+
+		}
+	});
+
+	app.showMore=function(number){
+		app.showMoreError=false;
+		if(app.number>0){
+			app.limit=app.number;
+
+		}
+		else{
+			
+			app.showMoreError="Please enter a valid number"
+		}
+
+	}
+
+
+	app.showAll=function(){
+		app.number=null
+		app.showMoreError=false;
+		app.limit=undefined;
+
+	}
+
 });
+
+
 
 

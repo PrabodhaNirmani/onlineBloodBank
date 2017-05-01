@@ -171,6 +171,24 @@ var app=angular.module('appRoutes',['ngRoute'])
 
 	})
 
+	.when('/blood-releases',{
+		templateUrl:'app/views/pages/admin/view_blood_releases.html',
+		controller:'showReleaseCtrl',
+		controllerAs:'showRelease',
+		authenticate:true,
+		permission:['admin']
+
+	})
+
+	.when('/blood-expirations',{
+		templateUrl:'app/views/pages/admin/view_blood_expires.html',
+		controller:'showExpireCtrl',
+		controllerAs:'showExpire',
+		authenticate:true,
+		permission:['admin']
+
+	})
+
 	.when('/donation-campaign',{
 		templateUrl:'app/views/pages/donation_campaigns.html',
 		authenticate:false,
