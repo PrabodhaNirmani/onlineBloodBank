@@ -259,8 +259,8 @@ module.exports=function(router){
 									  from: 'Localhost staff,bloodbank@localhost.com',
 									  to: staff.email,
 									  subject: 'Activation link request',
-									  text: 'Hello '+staff.name+'. You have recently request for activation link for your account of ONLINE BLOOD BANK for staff member access. You can activate your account using this link : http://localhost:8080/activate. Thank You!!!',
-									  html: 'Hello '+staff.name+'. You have recently request for activation link for your account of ONLINE BLOOD BANK for staff member access. You can activate your account using this link : <a href="http://localhost:8080/activate/'+staff.temporyToken+'">http://localhost:8080/activate</a><br><br><br>Thank You!!!'
+									  text: 'Hello '+staff.name+'. You have recently request for activation link for your account of ONLINE BLOOD BANK for staff member access. You can activate your account using this link : https://onlinebloodbank.herokuapp.com/activate. Thank You!!!',
+									  html: 'Hello '+staff.name+'. You have recently request for activation link for your account of ONLINE BLOOD BANK for staff member access. You can activate your account using this link : <a href="https://onlinebloodbank.herokuapp.com/activate/'+staff.temporyToken+'">https://onlinebloodbank.herokuapp.com/activate</a><br><br><br>Thank You!!!'
 									};
 
 									//sending the email
@@ -367,8 +367,8 @@ module.exports=function(router){
 							  from: 'Localhost staff,bloodbank@localhost.com',
 							  to: user.email,
 							  subject: 'Password reset request',
-							  text: 'Hello... You have recently request for reset password of your account. You can use this link to reset your password : http://localhost:8080/reset-password<br>',
-							  html: 'Hello... You have recently request for reset password of your account. <br><br>You can use this link to reset your password  : <a href="http://localhost:8080/reset-password/'+user.resetToken+'">http://localhost:8080/reset-password</a><br><br><br>Thank You!!!'
+							  text: 'Hello... You have recently request for reset password of your account. You can use this link to reset your password : https://onlinebloodbank.herokuapp.com/reset-password<br>',
+							  html: 'Hello... You have recently request for reset password of your account. <br><br>You can use this link to reset your password  : <a href="https://onlinebloodbank.herokuapp.com/reset-password/'+user.resetToken+'">https://onlinebloodbank.herokuapp.com/reset-password</a><br><br><br>Thank You!!!'
 							};
 
 							//sending the email
@@ -602,8 +602,8 @@ module.exports=function(router){
 									  from: 'Localhost staff,bloodbank@localhost.com',
 									  to: staff.email,
 									  subject: 'Loging details to the ONLINE BLOOD BANK',
-									  text: 'Hello '+staff.name+'. Your account of ONLINE BLOOD BANK for staff member access was created. You can activate your account using this link : http://localhost:8080/activate. Thank You!!!',
-									  html: 'Hello '+staff.name+'. Your account of ONLINE BLOOD BANK for staff member access was created. You can activate your account using this link : <a href="http://localhost:8080/activate/'+staff.temporyToken+'">http://localhost:8080/activate</a><br><br><br>Thank You!!!'
+									  text: 'Hello '+staff.name+'. Your account of ONLINE BLOOD BANK for staff member access was created. You can activate your account using this link : https://onlinebloodbank.herokuapp.com/activate. Thank You!!!',
+									  html: 'Hello '+staff.name+'. Your account of ONLINE BLOOD BANK for staff member access was created. You can activate your account using this link : <a href="https://onlinebloodbank.herokuapp.com/activate/'+staff.temporyToken+'">https://onlinebloodbank.herokuapp.com/activate</a><br><br><br>Thank You!!!'
 									};
 
 									client.sendMail(email, function(err, info){
