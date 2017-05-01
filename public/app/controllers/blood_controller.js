@@ -83,7 +83,7 @@ angular.module('bloodCtrl',['bloodServices'])
 	Blood.releaseBloodRequest().then(function(data){
 		if(data.data.success){
 			app.blood=data.data.blood;
-			console.log(app.blood);
+			// console.log(app.blood);
 
 		}
 		else{

@@ -54,9 +54,13 @@ angular.module('userServies',[])
 	}
 
 	userFactory.changePassword=function(userData){
-		return $http.post('/api/change-password',userData)
+		return $http.post('/api/change-password',userData);
 	}
 
+	userFactory.getUserDetails=function(username){
+		return $http.get('/api/get-user-details/'+username);
+
+	}
 	
 
 	

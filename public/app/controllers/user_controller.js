@@ -49,7 +49,7 @@ angular.module('userCtrl',['userServies'])
 						app.loading=false;
 						app.successMsg=msg.data.message+'.... Redirecting...';
 						$timeout(function(){
-							$location.path('/');	
+							$location.path('/about');	
 						},1000);
 						
 					}, 1000);
@@ -124,5 +124,33 @@ angular.module('userCtrl',['userServies'])
 	}
 
 
+})
+
+
+.controller('userProfileCtrl',function(User,$location,Auth,$routeParams,$scope){
+	var app=this;
+	$scope.nameTab="active";
+	User.getUserDetails($routeParams.username).then(function(data){
+
+		if(data.data.success){
+			app.user=data.data.User;
+
+		}
+		else{
+			Auth.logout(); 
+			$location.path('/login');	
+			
+
+		}
+	});
+
+	app.namePhase=function(){
+
+	}
+
+	app.emailPhase=function(){
+
+	}
 });
+
 

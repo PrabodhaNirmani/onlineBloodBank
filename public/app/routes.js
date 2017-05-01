@@ -93,9 +93,20 @@ var app=angular.module('appRoutes',['ngRoute'])
 		
 
 	})
-	.when('/profile',{
+	.when('/profile/:username',{
 		templateUrl:'app/views/pages/user/profile.html',
 		authenticate:true,
+		controller:'userProfileCtrl',
+		controllerAs:'userProfile',
+		permission:['admin','staff']
+
+
+	})
+	.when('/edit-profile/:username',{
+		templateUrl:'app/views/pages/user/edit_profile.html',
+		authenticate:true,
+		controller:'userProfileCtrl',
+		controllerAs:'userProfile',
 		permission:['admin','staff']
 
 

@@ -1084,6 +1084,23 @@ module.exports=function(router){
 		});
 	});
 
+
+	router.get('/get-user-details/:username',function(req,res){
+		var username=req.params.username;
+		User.findOne({username:username}).select().exec(function(err,user){
+			if(err){
+				res.json({success:false});
+
+			}
+			else if(!user){
+				res.json({sucess:false});
+			}
+			else{
+				res.json({success:true,User:user})
+			}
+		});
+	});
+
 	// route to get ditricts list in Sri Lanka
 	router.get('/get-districts',function(req,res){
 		District.find({valid:true}).select('district').exec(function(err,list){
