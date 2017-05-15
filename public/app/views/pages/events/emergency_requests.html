@@ -1,0 +1,73 @@
+
+<div class="page-header"><h1>Emergency Requests</h1></div>
+<div class="col-sm-6 col-sm-offset-3">
+
+<ul>
+	
+	<br><br>
+
+	<div class="panel panel-green" ng-repeat="request in request.requests">
+		<!-- <div class="panel"> -->
+			<div class="panel-heading large-text" align="center">
+				<strong>{{request.abo + request.rh}}</strong> | {{request.district}} | {{request.date.substr(0,10)}}
+			</div>
+			<br>
+			<div class="card col-sm-offset-1" style="width:45rem;">
+				
+
+				<div class="card-block">
+					<h4 class="card-title">{{request.description}}</h4>
+					<!-- <h5>{{request._id}}</h5> -->
+					
+				</div><br>
+
+				<ul class="list-group list-group-flush">
+					<li class="list-group-item">
+						<div class="row">
+							<div class="col-sm-3">
+								<span class="glyphicon glyphicon-user" ></span>
+							</div>
+							<div class="col-sm-8">
+								{{request.contact_person}}
+							</div>
+						</div>
+					</li>
+
+					<li class="list-group-item">
+						<div class="row">
+							<div class="col-sm-3">
+								<span class="glyphicon glyphicon-earphone">  </span>
+							</div>
+							<div class="col-sm-8">
+								{{request.contact_no}}
+							</div>
+						</div>
+
+		  			</li>
+			
+				</ul>
+				
+			</div>
+			<div class="col-sm-offset-9" ng-show="main.role=='admin'">
+			
+				<button type="button" class="btn btn-danger" ng-click="request.removeEmergencyRequest(request._id)">Remove</button>
+
+			</div>
+			<br><br>
+		<!-- </div> -->
+	</div>	
+	<br><br><br>
+</ul>
+</div>
+
+<style type="text/css">
+	
+
+	.large-text{
+		font-size: 30px
+	}
+
+	.glyphicon.glyphicon {
+   	 font-size: 30px;
+	}
+</style>

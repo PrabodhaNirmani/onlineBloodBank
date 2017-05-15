@@ -190,16 +190,44 @@ var app=angular.module('appRoutes',['ngRoute'])
 	})
 
 	.when('/donation-campaign',{
-		templateUrl:'app/views/pages/donation_campaigns.html',
+		templateUrl:'app/views/pages/events/donation_campaigns.html',
+		controller:'campaignCtrl',
+		controllerAs:'campaign',
 		authenticate:false,
 		permission:false
 	})
 
 	.when('/emergency-request',{
-		templateUrl:'app/views/pages/emergency_requests.html',
+		templateUrl:'app/views/pages/events/emergency_requests.html',
+		controller:'requestCtrl',
+		controllerAs:'request',
 		authenticate:false,
 		permission:false
 	})
+
+	// .when('/donation-campaign-edit',{
+	// 	templateUrl:'app/views/pages/events/donation_campaigns.html',
+	// 	controller:'campaignCtrl',
+	// 	controllerAs:'campaign',
+	// 	authenticate:true,
+	// 	permission:['admin']
+	// })
+	// .when('/confirm-campaign/:id',{
+	// 	templateUrl:'app/views/pages/events/confirm_donation_campaigns.html',
+	// 	controller:'confirmCtrl',
+	// 	controllerAs:'confirm',
+	// 	authenticate:true,
+	// 	permission:['admin']
+	// })
+	
+
+	// .when('/emergency-request-edit',{
+	// 	templateUrl:'app/views/pages/events/emergency_requests.html',
+	// 	controller:'requestCtrl',
+	// 	controllerAs:'request',
+	// 	authenticate:true,
+	// 	permission:['admin']
+	// })
 
 	
 

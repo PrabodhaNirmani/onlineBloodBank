@@ -1,0 +1,131 @@
+
+<div class="page-header"><h1>Donation Campaigns</h1></div>
+
+<!-- <div class="col-sm-offset-9" ng-show="main.role=='admin'" align="right">
+<button class="btn btn-lg btn-danger" ng-click="campaign.show()">Pending Events</button>
+
+</div> -->
+<br><br>
+<!-- <div class="panel panel-red" ng-show="campaign.showFlag">
+		<div class="panel-heading">
+			<strong>Donation Campaign Requests</strong>
+		</div>
+
+						<a href="#">
+							<button type="button" class="btn btn-primary" ng-click="campaign.confirm(campaigns[0]._id)">Confirm</button>		
+						</a>
+		<table class="table table-bordered table-hover table-striped">
+                      
+			<thead>
+				<tr>
+					<th> Donation campaign Id</th>
+					<th> District</th>
+					<th> Address</th>
+					<th> Date</th>
+					<th> Duration</th>
+					<th> Description</th>
+					<th> Charity Organization</th>
+					<th></th>
+					
+				</tr>
+
+			</thead>
+			<tbody>
+				<tr ng-repeat="campaign in campaign.pending">
+					<td>{{campaign._id}}</td>
+					<td>{{campaign.district}}</td>
+					<td>{{campaign.address}}</td>
+					<td>{{campaign.date}}</td>
+					<td>{{campaign.from}} - {{campaign.to}}</td>
+					<td>{{campaign.description}}</td>
+					<td>{{campaign.charity_organization}}</td>
+					<td>
+						<a href="/confirm-campaign/{{campaign._id}}">
+							<button type="button" class="btn-primary"> here</button>
+						</a>
+					</td>
+					<td>
+						<a href="#">
+						<span ng-click="campaign.confirm(campaign._id)">Click</span>
+							<button type="button" class="btn btn-primary" ng-click="campaign.confirm(campaign._id)">Confirm</button>		
+						</a>
+					</td>
+					
+				</tr>
+			</tbody>					
+		</table>
+		
+</div> -->
+<div class="col-sm-6 col-sm-offset-3">
+<ul>
+	
+	<br><br>
+
+	<div class="panel panel-green" ng-repeat="campaign in campaign.campaigns">
+		<div class="panel-heading large-text" align="center">
+			{{campaign.district}} on<strong> {{campaign.date.substr(0,10)}}</strong>  
+		</div>
+		<br>
+		<div class="card col-sm-offset-1" style="width:45rem;">
+			
+
+			<div class="card-block">
+				<h4 class="card-title">{{campaign.description}}</h4>
+				
+			</div><br>
+
+			<ul class="list-group list-group-flush">
+				<li class="list-group-item">
+					<div class="row">
+						<div class="col-sm-3">
+							<span class="glyphicon glyphicon-map-marker" ></span>
+						</div>
+						<div class="col-sm-8">
+							{{campaign.address}}
+						</div>
+					</div>
+				</li>
+
+				<li class="list-group-item">
+					<div class="row">
+						<div class="col-sm-3">
+							<span class="glyphicon glyphicon-time">  </span>
+						</div>
+						<div class="col-sm-8">
+							{{campaign.from}} - {{campaign.to}}
+						</div>
+					</div>
+
+	  			</li>
+	  			<li class="list-group-item">
+					<div class="row">
+						<div class="col-sm-3">
+							<span class="glyphicon glyphicon-home">  </span>
+						</div>
+						<div class="col-sm-8">
+							{{campaign.charity_organization}} 
+						</div>
+					</div>
+
+	  			</li>
+		
+			</ul>
+			
+		</div>
+		<br><br>
+	</div>	
+	<br><br><br>
+</ul>
+</div>
+
+<style type="text/css">
+	
+
+	.large-text{
+		font-size: 30px
+	}
+
+	.glyphicon.glyphicon {
+   	 font-size: 30px;
+	}
+</style>

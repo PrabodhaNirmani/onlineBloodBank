@@ -1,12 +1,17 @@
 var User=require('../models/user');
 var Donation=require('../models/donation');
+var StaffMember=require('../models/staff_member');
 var BloodDonor=require('../models/blood_donor');
 var BloodPacket=require('../models/blood_packet');
 var District=require('../models/district');
+var DonationCampaign=require('../models/donation_campaign');
+var EmergencyRequest=require('../models/emergency_request');
+
+
 var jwt = require('jsonwebtoken');
 var secret='redjohn';
 
-var StaffMember=require('../models/staff_member');
+
 var nodemailer = require('nodemailer');
 var sgTransport = require('nodemailer-sendgrid-transport');
 var emailExistence = require('email-existence');
@@ -31,9 +36,9 @@ module.exports=function(router){
 		User.findOne({username:req.body.username}).select('username password email role active').exec(function(err,user){ 
 			
 			if(err) {
-
+				res.json({success:false, message:"Counld not authenticate user",forgetUsername:true});
 			
-				// return handleError(err);
+				
 			}
 			else{
 				if(!user){
@@ -64,7 +69,39 @@ module.exports=function(router){
 		
 	});
 
+	router.get('/donation-campaigns',function(req,res){
+		DonationCampaign.find().select().exec(function(err,campaigns){
+			if(err){
+				res.json({success:false,message:"Operation failed"});
+			}
+			else if(campaigns.length<1){
+				res.json({success:false,message:"No donation campaign events created"});	
+			}
+			else{
+				res.json({success:true,campaigns:campaigns});		
+			}
 
+		});
+
+	});
+	
+	
+	router.get('/emergency-requests',function(req,res){
+		EmergencyRequest.find().select().exec(function(err,requests){
+			if(err){
+				res.json({success:false,message:"Operation failed"});
+			}
+			else if(requests.length<1){
+				res.json({success:false,message:"No emergency request events created"});	
+			}
+			else{
+				res.json({success:true,requests:requests});		
+			}
+
+		});
+
+	});
+	
 	//http://localhost:port/api/check-email
 	router.post('/check-email',function(req,res){
 		User.findOne({email:req.body.email}).select('email').exec(function(err,user){ 
@@ -574,7 +611,7 @@ module.exports=function(router){
 		
 		staff.tele_no=req.body.tele_no;
 		staff.email=req.body.email;
-		staff.temporyToken=jwt.sign({email:staff.email},secret,{ expiresIn: '5s' });
+		staff.temporyToken=jwt.sign({email:staff.email},secret,{ expiresIn: '2d' });
 		staff.active=false;
 		
 		if(req.body.email==null||req.body.email==''||req.body.name==null||req.body.name=='' || req.body.tele_no==null||req.body.tele_no==''){
@@ -589,35 +626,46 @@ module.exports=function(router){
 			emailExistence.check(staff.email, function(err,response){
 				if(response){
 					//creating user
-					staff.save(function(error){
-						
-								if(error){
-							
-									res.json({success: false,message:"Email or username already exists"})	
-							
-								}
-								else{
-							
-									var email = {
-									  from: 'onlinebloodbanksrilanka@gmail.com',
-									  to: staff.email,
-									  subject: 'Loging details to the ONLINE BLOOD BANK',
-									  text: 'Hello '+staff.name+'. Your account of ONLINE BLOOD BANK for staff member access was created. You can activate your account using this link : https://onlinebloodbank.herokuapp.com/activate. Thank You!!!',
-									  html: 'Hello '+staff.name+'. Your account of ONLINE BLOOD BANK for staff member access was created. You can activate your account using this link : <a href="https://onlinebloodbank.herokuapp.com/activate/'+staff.temporyToken+'">https://onlinebloodbank.herokuapp.com/activate</a><br><br><br>Thank You!!!'
-									};
+					User.findOne({email:staff.email}).select().exec(function(err,u){
+						if(err){
+							res.json({success: false,message:"Operation failed"});	
+						}
+						else if(user){
+							res.json({success: false,message:"Email already exists"});
+						}
+						else{
+							staff.save(function(error){
+								
+										if(error){
+									
+											res.json({success: false,message:"Email already exists"});
+									
+										}
+										else{
+									
+											var email = {
+											  from: 'onlinebloodbanksrilanka@gmail.com',
+											  to: staff.email,
+											  subject: 'Loging details to the ONLINE BLOOD BANK',
+											  text: 'Hello '+staff.name+'. Your account of ONLINE BLOOD BANK for staff member access was created. You can activate your account using this link : https://onlinebloodbank.herokuapp.com/activate. Thank You!!!',
+											  html: 'Hello '+staff.name+'. Your account of ONLINE BLOOD BANK for staff member access was created. You can activate your account using this link : <a href="https://onlinebloodbank.herokuapp.com/activate/'+staff.temporyToken+'">https://onlinebloodbank.herokuapp.com/activate</a><br><br><br>Thank You!!!'
+											};
 
-									client.sendMail(email, function(err, info){
-									    if (err ){
-									      console.log(error);
-									    }
-									    else {
-									    	res.json({success: true,message:"Staff Member created successfully"});		
-											console.log('Message sent: ' + info);
-									    }
-									});							
-						
-								}
-					});
+											client.sendMail(email, function(err, info){
+											    if (err ){
+											      console.log(error);
+											    }
+											    else {
+											    	res.json({success: true,message:"Staff Member created successfully"});		
+													console.log('Message sent: ' + info);
+											    }
+											});							
+								
+										}
+							});							
+						}
+					})
+
 				}
 				else{
 					res.json({success:false,message:"Mailbox does not exist for the given email address"});
@@ -779,33 +827,7 @@ module.exports=function(router){
 							res.json({success:false,message:"Error occured"});
 						}
 						else{
-							//creatinng email
-							// var randomString = function(length) {
-							//     var text = "";
-							//     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-							//     for(var i = 0; i < length; i++) {
-							//         text += possible.charAt(Math.floor(Math.random() * possible.length));
-							//     }
-							//     return text;
-							// }
-							// var password=randomString(10);
-							// var email = {
-							// 	from: 'onlinebloodbanksrilanka@gmail.com',
-							// 	to: donor.email,
-							// 	subject: 'Loging details to the BLOOD DONOR APP',
-							// 	text: 'Hello '+donor.name+'. Your account of BLOOD DONOR APP was created. This e-mail contains login details to the system. Username :'+donor.username+'Password : '+password+'',
-							// 	html: 'Hello '+donor.name+'. Your account of BLOOD DONOR APP was created. This e-mail contains login details to the system.<br><br><b>Username : </b>'+donor.username+'<br><b>Password : </b>'+password+''
-							// };
-							// //sending email
-							// client.sendMail(email, function(err, info){
-							//     if (err ){
-							//       console.log(error);
-							//     }
-							//     else {
-							//     	res.json({success:true,message:"Blood donor created successfully",BloodDonor:donor})
-							// 		console.log('Message sent: ' + info);
-							//     }
-							// });
+							
 							res.json({success:true,message:"Blood donor created successfully",BloodDonor:donor})
 						}
 
@@ -961,6 +983,7 @@ module.exports=function(router){
 
 			  									bloodPacket.save(function(err,bloodPacket){
 													if(err){
+														console.log(err)
 														res.json({success:false,message:"Error occured"});
 													}
 													else{
@@ -1228,6 +1251,32 @@ module.exports=function(router){
 			
 		});
 	});
+
+	router.put('/remove-emergenct-requests',function(req,res){
+		var request_id=req.body._id;
+		EmergencyRequest.find({_id:request_id}).select().exec(function(err,request){
+			
+			if(err) throw err;
+
+			if(!request){
+				res.json({success:false})
+			}
+			else{
+				request.active=false;
+				request.save(function(err){
+					if(err){
+						res.json({success:false})
+					}
+					else{
+						res.json({success:true})
+					}
+				})
+			}
+
+			
+		});
+	});
+
 	
 
 	//route to root

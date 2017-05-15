@@ -4,6 +4,7 @@ module.exports=function(donatedDate) {
 	var expirationDate=donatedDate;
 	var month=donatedDate.getMonth()+1;
 	expirationDate.setMonth(month);
-	return expirationDate;
+	return true;
+	// return expirationDate;
 	
 }
