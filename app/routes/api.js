@@ -22,8 +22,8 @@ module.exports=function(router){
 	//my account details of sendgrid
 	var options = {
 	  auth: {
-	    api_user: 'nirmani',
-	    api_key: 'prabodha@1994'
+	    api_user: 'ariyarathna',
+	    api_key: 'azone@2221421'
 	  }
 	}
 
@@ -630,14 +630,16 @@ module.exports=function(router){
 						if(err){
 							res.json({success: false,message:"Operation failed"});	
 						}
-						else if(user){
+						else if(u){
 							res.json({success: false,message:"Email already exists"});
 						}
 						else{
 							staff.save(function(error){
-								
+								console.log(staff
+									)
 										if(error){
-									
+											// console.log("here")
+											console.log(error)
 											res.json({success: false,message:"Email already exists"});
 									
 										}
@@ -651,9 +653,10 @@ module.exports=function(router){
 											  html: 'Hello '+staff.name+'. Your account of ONLINE BLOOD BANK for staff member access was created. You can activate your account using this link : <a href="https://onlinebloodbank.herokuapp.com/activate/'+staff.temporyToken+'">https://onlinebloodbank.herokuapp.com/activate</a><br><br><br>Thank You!!!'
 											};
 
+
 											client.sendMail(email, function(err, info){
 											    if (err ){
-											      console.log(error);
+											      console.log(err);
 											    }
 											    else {
 											    	res.json({success: true,message:"Staff Member created successfully"});		
