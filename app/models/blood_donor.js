@@ -29,7 +29,7 @@ var emailValidator = [
 
 var BloodDonorSchema=new Schema({
 
-	name:{type:String, required:true, validate:nameValidator},
+	name:{type:String, required:true},
   nic_no:{type:String, required:true, unique:true},
   birthday:{type:Date,required:true},
   gender:{type:String, required:true},
@@ -37,7 +37,7 @@ var BloodDonorSchema=new Schema({
   district:{type:String,required:true},
   address:{type:String, required:true},
   tele_no:{type:String, required:true},
-  email:{type:String, lowercase:true, required:true, unique:true,validate:emailValidator},
+  email:{type:String, lowercase:true, required:true, unique:true},
   abo:{type:String, required:true},
   rh:{type:String,required:true},
   donation_count:{type:Number,default:0},

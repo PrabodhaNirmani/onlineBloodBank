@@ -29,18 +29,15 @@ var usernameValidator = [
   })
 ];
 
-
-
-
 var UserSchema=new Schema({
 	name:{
-    type:String,required:true, default: null
+    type:String, default: null
   },
   email:{
-    type:String, lowercase:true, required:true, unique:true, validate:emailValidator
+    type:String, lowercase:true, required:true, unique:true
   },
 	username:{
-    type:String, lowercase:true, required:true, unique:true, validate:usernameValidator
+    type:String, lowercase:true, required:true, unique:true
   },
   password:{
     type:String, required:true

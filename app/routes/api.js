@@ -22,8 +22,8 @@ module.exports=function(router){
 	//my account details of sendgrid
 	var options = {
 	  auth: {
-	    api_user: 'ariyarathna',
-	    api_key: 'azone@2221421'
+	    api_user: 'pnirmani',
+	    api_key: 'Prabodha@1994'
 	  }
 	}
 
@@ -104,6 +104,7 @@ module.exports=function(router){
 	
 	//http://localhost:port/api/check-email
 	router.post('/check-email',function(req,res){
+		console.log(req.body)
 		User.findOne({email:req.body.email}).select('email').exec(function(err,user){ 
 			
 			if(err) {
@@ -112,7 +113,7 @@ module.exports=function(router){
 			}
 			else{
 				if(!user){
-					// console.log(req.body.email)
+					
 					emailExistence.check(req.body.email, function(err,response){
 						if(response){
 							res.json({success:true, message:"Valid e-mail"});
@@ -207,14 +208,24 @@ module.exports=function(router){
 	});
 
 	router.post('/save-staff',function(req,res){
-		var user=new User();
+		// var user=new User(
+		// 	{
+		// 		email: req.body.email,
+		// 		username: req.body.username,
+		// 		password: req.body.password,
+		// 		role: "staff",
+		// 		active: true,
+			
+		// 	});
+		
+		var user = new User();
 		user.email=req.body.email;
 		user.username=req.body.username;
 		user.password=req.body.password;
 		user.role="staff";
 		// user.temporyToken=null;
 		user.active=true;
-		console.log(user);
+
 		if(req.body.username==null||req.body.username==''|| req.body.password==null||req.body.password==''||req.body.passwordC==null||req.body.passwordC==''){
 			
 			res.json({success: false,message:"Ensure that Username and password provided"})
@@ -227,19 +238,22 @@ module.exports=function(router){
 			//creating user
 			user.save(function(err){
 				if(err){
-					
+					console.log(err);
+					console.log("error1");
 					res.json({success: false,message:err})
 				}
 				else{
 					StaffMember.findOne({email:user.email}).select('name temporyToken active').exec(function(err,staff){
 						if(err){
-
+							console.log(err);
+							console.log("error2");
 						}
 						else{
 							staff.temporyToken=null;
 							staff.active=true;
 							staff.save();
 							user.name=staff.name;
+							console.log(user);
 							user.save();
 						}
 					});
@@ -297,7 +311,7 @@ module.exports=function(router){
 									  to: staff.email,
 									  subject: 'Activation link request',
 									  text: 'Hello '+staff.name+'. You have recently request for activation link for your account of ONLINE BLOOD BANK for staff member access. You can activate your account using this link : https://onlinebloodbank.herokuapp.com/activate. Thank You!!!',
-									  html: 'Hello '+staff.name+'. You have recently request for activation link for your account of ONLINE BLOOD BANK for staff member access. You can activate your account using this link : <a href="https://onlinebloodbank.herokuapp.com/activate/'+staff.temporyToken+'">https://onlinebloodbank.herokuapp.com/activate</a><br><br><br>Thank You!!!'
+									  html: 'Hello '+staff.name+'. You have recently request for activation link for your account of ONLINE BLOOD BANK for staff member access. You can activate your account using this link : <a href="http://localhost:8081/activate/'+staff.temporyToken+'">https://onlinebloodbank.herokuapp.com/activate</a><br><br><br>Thank You!!!'
 									};
 
 									//sending the email
@@ -405,7 +419,7 @@ module.exports=function(router){
 							  to: user.email,
 							  subject: 'Password reset request',
 							  text: 'Hello... You have recently request for reset password of your account. You can use this link to reset your password : https://onlinebloodbank.herokuapp.com/reset-password<br>',
-							  html: 'Hello... You have recently request for reset password of your account. <br><br>You can use this link to reset your password  : <a href="https://onlinebloodbank.herokuapp.com/reset-password/'+user.resetToken+'">https://onlinebloodbank.herokuapp.com/reset-password</a><br><br><br>Thank You!!!'
+							  html: 'Hello... You have recently request for reset password of your account. <br><br>You can use this link to reset your password  : <a href="http://localhost:8081/reset-password/'+user.resetToken+'">https://onlinebloodbank.herokuapp.com/reset-password</a><br><br><br>Thank You!!!'
 							};
 
 							//sending the email
@@ -650,7 +664,7 @@ module.exports=function(router){
 											  to: staff.email,
 											  subject: 'Loging details to the ONLINE BLOOD BANK',
 											  text: 'Hello '+staff.name+'. Your account of ONLINE BLOOD BANK for staff member access was created. You can activate your account using this link : https://onlinebloodbank.herokuapp.com/activate. Thank You!!!',
-											  html: 'Hello '+staff.name+'. Your account of ONLINE BLOOD BANK for staff member access was created. You can activate your account using this link : <a href="https://onlinebloodbank.herokuapp.com/activate/'+staff.temporyToken+'">https://onlinebloodbank.herokuapp.com/activate</a><br><br><br>Thank You!!!'
+											  html: 'Hello '+staff.name+'. Your account of ONLINE BLOOD BANK for staff member access was created. You can activate your account using this link : <a href="http://localhost:8081/activate/'+staff.temporyToken+'">https://onlinebloodbank.herokuapp.com/activate</a><br><br><br>Thank You!!!'
 											};
 
 

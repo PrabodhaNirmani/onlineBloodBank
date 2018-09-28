@@ -1,6 +1,6 @@
 var express=require('express');
 var app=express();
-var port=process.env.PORT||8080
+var port=process.env.PORT||8081
 var morgan=require('morgan');
 var cors=require('cors')
 var mongoose=require('mongoose');
@@ -38,7 +38,7 @@ app.get('*',function(req,res){
 	res.sendFile(path.join(__dirname+'/public/app/views/index.html'));
 })
 
-//starting the server and listening on pora 8080
+//starting the server and listening on pora 8081
 app.listen(port, function(){
 	console.log('running the server on port '+ port);
 });
