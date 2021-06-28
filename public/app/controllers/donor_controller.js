@@ -9,7 +9,7 @@ angular.module('donorCtrl',['donorServices'])
 	
 	app.today=new Date;
 	app.donorData=false;
-	app.districts=[];
+	app.districts=['Matara','Galle','Hambantota','Colombo','Gampaha','Kaluthara','Monaragala','Badulla','Kandy','Matale','Nuwara Eliya','Ampara','Anuradhapura','Batticaloa','Jaffna','Kegalle','Kilinochchi','Kurunegala','Mannar','Mullaitivu','Polonnaruwa','Puttalam','Rathnapura','Trincomalee','Vavniya'];
 	
 
 	Donor.getDistricts().then(function(msg){
