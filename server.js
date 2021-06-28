@@ -1,6 +1,6 @@
 var express=require('express');
 var app=express();
-var port=process.env.PORT||8081
+var port=process.env.PORT||8080
 var morgan=require('morgan');
 var cors=require('cors')
 var mongoose=require('mongoose');
@@ -20,11 +20,8 @@ app.use(cors())
 app.use('/api',appRoutes);
 app.use('/api-mobile',mobileRoutes);
 
-var District=require('./app/models/district');
-var districtList=['Matara','Galle','Hambantota','Colombo','Gampaha','Kaluthara','Monaragala','Badulla','Kandy','Matale','Nuwara Eliya','Ampara','Anuradhapura','Batticaloa','Jaffna','Kegalle','Kilinochchi','Kurunegala','Mannar','Mullaitivu','Polonnaruwa','Puttalam','Rathnapura','Trincomalee','Vavniya'];
-
 mongoose.Promise=global.Promise;
-mongoose.connect('mongodb://prabodha:prabodha@ds147080.mlab.com:47080/blood-bank', function(err){
+mongoose.connect('mongodb://prabodha:7894511@onlinebloodbank-shard-00-00.jusc3.mongodb.net:27017,onlinebloodbank-shard-00-01.jusc3.mongodb.net:27017,onlinebloodbank-shard-00-02.jusc3.mongodb.net:27017/online-blood-bank?ssl=true&replicaSet=atlas-azsr26-shard-0&authSource=admin&retryWrites=true&w=majority', function(err){
 	if(err){
 		console.log('Not connected to db');
 		console.log(err);
@@ -38,7 +35,7 @@ app.get('*',function(req,res){
 	res.sendFile(path.join(__dirname+'/public/app/views/index.html'));
 })
 
-//starting the server and listening on pora 8081
+//starting the server and listening on port 8080
 app.listen(port, function(){
 	console.log('running the server on port '+ port);
 });
